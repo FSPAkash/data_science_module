@@ -1,0 +1,2613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Learning Module | Data Science Foundations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --blue: #7EB8DA;
+            --blue-deep: #5A9BC5;
+            --blue-light: #A8D4EA;
+            --blue-pale: #E8F4FA;
+            --blue-glow: rgba(126, 184, 218, 0.18);
+            --green: #7BC8A4;
+            --green-deep: #5BAF8A;
+            --green-light: #A3DBBF;
+            --green-pale: #E6F5EE;
+            --green-glow: rgba(123, 200, 164, 0.18);
+            --red: #E8877C;
+            --red-pale: #FDF0EE;
+            --orange: #E8B87C;
+            --orange-pale: #FDF5EC;
+            --purple: #B08FCC;
+            --purple-pale: #F3EDF8;
+            --text: #2C3E50;
+            --text-secondary: #5D6D7E;
+            --text-tertiary: #8899AA;
+            --text-quaternary: #AAB7C4;
+            --bg: #FAFCFE;
+            --bg-secondary: #F0F5F9;
+            --bg-card: #FFFFFF;
+            --border: #DCE8F0;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --shadow-sm: 0 1px 4px rgba(44, 62, 80, 0.05);
+            --shadow-md: 0 4px 18px rgba(44, 62, 80, 0.07);
+            --shadow-lg: 0 12px 40px rgba(44, 62, 80, 0.10);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ---- Particles ---- */
+        .particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        /* ---- Layout ---- */
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2.5rem 3rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---- Header ---- */
+        .header-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .header-logo {
+            width: 56px;
+            height: 56px;
+            background: transparent;
+            display: block;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header-text {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+        }
+
+        /* ---- Title ---- */
+        .title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            animation: slideUp 0.5s ease-out both 0.1s;
+        }
+
+        .intro {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            max-width: 680px;
+            margin-bottom: 2rem;
+            animation: slideUp 0.5s ease-out both 0.2s;
+        }
+
+        /* ---- Progress ---- */
+        .progress-bar-container {
+            margin-bottom: 2rem;
+            animation: slideUp 0.5s ease-out both 0.25s;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.78rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .progress-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .reset-progress-btn {
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text-tertiary);
+            font: inherit;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 0.18rem 0.48rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: var(--transition);
+            line-height: 1.2;
+        }
+
+        .reset-progress-btn:hover {
+            border-color: var(--blue-light);
+            color: var(--blue-deep);
+            background: var(--bg-secondary);
+        }
+
+        /* ---- Flow steps ---- */
+        .flow {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 0;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .flow-track,
+        .flow-progress {
+            position: absolute;
+            top: 16px; left: 60px; right: 60px;
+            height: 2px;
+            border-radius: 1px;
+            z-index: 0;
+        }
+
+        .flow-track { background: var(--border); }
+
+        .flow-progress {
+            background: linear-gradient(to right, var(--blue), var(--green));
+            right: auto;
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step { text-align: center; position: relative; z-index: 1; }
+
+        .step .dot {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; color: var(--text-tertiary);
+            position: relative; z-index: 1;
+            transition: var(--transition);
+        }
+
+        .step h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+        .step p { font-size: 0.78rem; color: var(--text-tertiary); line-height: 1.45; padding: 0 0.5rem; }
+
+        .step-meter {
+            width: 74%;
+            height: 5px;
+            margin: 0.65rem auto 0.35rem;
+            border-radius: 999px;
+            background: var(--bg-secondary);
+            overflow: hidden;
+        }
+
+        .step-meter-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--blue), var(--green));
+            transition: width 0.5s ease;
+        }
+
+        .step-status {
+            font-size: 0.7rem;
+            color: var(--text-quaternary);
+            min-height: 1.1rem;
+            line-height: 1.35;
+        }
+
+        .step.complete .dot {
+            background: linear-gradient(135deg, var(--blue), var(--green));
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(126, 184, 218, 0.35);
+        }
+
+        .step.partial .dot {
+            background: #fff;
+            border-color: var(--blue-light);
+            color: var(--blue-deep);
+        }
+
+        .step.complete h3 { color: var(--blue-deep); }
+        .step.complete p { color: var(--text-secondary); }
+        .step.partial h3 { color: var(--text); }
+        .step.partial p { color: var(--text-secondary); }
+        .step.complete .step-status { color: var(--green-deep); }
+        .step.partial .step-status { color: var(--text-secondary); }
+
+        /* ---- Tabs ---- */
+        .tab-bar {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+            animation: slideUp 0.5s ease-out both 0.3s;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover { color: var(--text-secondary); }
+
+        .tab-btn.active {
+            color: var(--blue-deep);
+            border-bottom-color: var(--blue-deep);
+        }
+
+        .tab-btn .tab-badge {
+            display: inline-block;
+            margin-left: 0.5rem;
+            padding: 0.1rem 0.45rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 10px;
+            background: var(--blue-pale);
+            color: var(--blue-deep);
+            vertical-align: middle;
+        }
+
+        .tab-btn.active .tab-badge {
+            background: var(--blue-deep);
+            color: #fff;
+        }
+
+        .tab-content { display: none; animation: tabFadeIn 0.4s ease-out; }
+        .tab-content.active { display: block; }
+
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---- Topic cards ---- */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        .topic-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .topic-card:hover {
+            border-color: var(--blue);
+            box-shadow: var(--shadow-md), 0 0 0 1px var(--blue-glow);
+            transform: translateY(-2px);
+        }
+
+        .topic-card .card-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; font-weight: 700;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .topic-card .card-icon.blue { background: var(--blue); }
+        .topic-card .card-icon.green { background: var(--green); }
+        .topic-card .card-icon.orange { background: var(--orange); }
+        .topic-card .card-icon.purple { background: var(--purple); }
+        .topic-card .card-icon.red { background: var(--red); }
+
+        .topic-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+
+        .topic-card .card-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .topic-card .card-tag {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.68rem;
+            font-weight: 600;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .card-tag.beginner { background: var(--green-pale); color: var(--green-deep); }
+        .card-tag.intermediate { background: var(--blue-pale); color: var(--blue-deep); }
+        .card-tag.advanced { background: var(--purple-pale); color: var(--purple); }
+
+        .card-toggle {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--blue-deep);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ---- Comparison table ---- */
+        .comparison-section { margin-bottom: 2.5rem; }
+
+        .comparison-section h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            font-size: 0.85rem;
+        }
+
+        .comparison-table thead th {
+            background: var(--bg-secondary);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table tbody td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        .comparison-table tbody tr:last-child td { border-bottom: none; }
+        .comparison-table tbody tr:hover { background: var(--blue-glow); }
+
+        /* ---- Start Quiz Button ---- */
+        .start-quiz-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.8rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, var(--blue-deep), var(--green-deep));
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 3px 12px rgba(90, 155, 197, 0.3);
+            margin-top: 1rem;
+        }
+
+        .start-quiz-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(90, 155, 197, 0.4);
+        }
+
+        .start-quiz-btn:active {
+            transform: scale(0.97);
+        }
+
+        .start-quiz-btn .btn-arrow {
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .start-quiz-btn:hover .btn-arrow {
+            transform: translateX(3px);
+        }
+
+        .quiz-prompt {
+            text-align: center;
+            padding: 2rem 1rem;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-secondary);
+            margin-top: 1rem;
+        }
+
+        .quiz-prompt h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .quiz-prompt p {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        /* ---- Bridge prompt card ---- */
+        .bridge-prompt {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .bridge-prompt:hover {
+            border-color: var(--blue);
+            background: var(--blue-pale);
+        }
+
+        .bridge-prompt h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .bridge-prompt p {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        .bridge-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.65rem 1.5rem;
+            border: 1px solid var(--blue);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--blue-deep);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .bridge-btn:hover {
+            background: var(--blue-deep);
+            color: #fff;
+        }
+
+        /* ---- Modal Overlay ---- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(44, 62, 80, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 900;
+            align-items: center;
+            justify-content: center;
+            animation: modalBgIn 0.3s ease-out;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        @keyframes modalBgIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border-radius: 18px;
+            width: 92%;
+            max-width: 720px;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            padding: 2rem;
+            position: relative;
+            animation: modalSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-tertiary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-right: 2.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* ---- Topic detail inside modal ---- */
+        .topic-detail-content h4 {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--blue-deep);
+            margin-bottom: 0.6rem;
+            margin-top: 1.25rem;
+        }
+
+        .topic-detail-content h4:first-child { margin-top: 0; }
+
+        .topic-detail-content p, .topic-detail-content li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .topic-detail-content ul { list-style: none; margin-bottom: 0.5rem; }
+
+        .topic-detail-content ul li {
+            padding: 0.25rem 0 0.25rem 1.2rem;
+            position: relative;
+        }
+
+        .topic-detail-content ul li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0.65rem;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green-light);
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            margin: 0.75rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text);
+            overflow-x: auto;
+        }
+
+        .example-box {
+            background: var(--green-pale);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            margin: 0.75rem 0;
+            border-left: 3px solid var(--green);
+        }
+
+        .example-box.example-collapsible {
+            padding: 0;
+            border-left-width: 0;
+            border: 1px solid rgba(123, 200, 164, 0.35);
+            overflow: hidden;
+        }
+
+        .example-toggle {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: var(--green-deep);
+            font: inherit;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.1rem;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .example-toggle:hover {
+            background: rgba(123, 200, 164, 0.14);
+        }
+
+        .example-toggle[aria-expanded="true"] {
+            border-bottom-color: rgba(123, 200, 164, 0.35);
+        }
+
+        .example-toggle-icon {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+
+        .example-content {
+            padding: 0.9rem 1.1rem 1rem;
+        }
+
+        .example-box .example-label {
+            font-size: 0.68rem; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--green-deep);
+            margin-bottom: 0.4rem;
+        }
+
+        .example-box p { font-size: 0.85rem; color: var(--text); }
+
+        .pitfall-box {
+            background: var(--red-pale);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            margin: 0.75rem 0;
+            border-left: 3px solid var(--red);
+        }
+
+        .pitfall-box .pitfall-label {
+            font-size: 0.68rem; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--red);
+            margin-bottom: 0.4rem;
+        }
+
+        .pitfall-box p { font-size: 0.85rem; color: var(--text); }
+
+        .quiz-score {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .score-ring {
+            width: 48px; height: 48px;
+            position: relative;
+        }
+
+        .score-ring svg { transform: rotate(-90deg); }
+
+        .score-ring circle { fill: none; stroke-width: 4; }
+
+        .score-ring .track { stroke: var(--border); }
+
+        .score-ring .fill {
+            stroke: var(--blue);
+            stroke-dasharray: 138.2;
+            stroke-dashoffset: 138.2;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .score-ring .score-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .score-label {
+            font-size: 0.78rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        /* ---- Quiz cards (inside modal) ---- */
+        .quiz-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .quiz-card.answered-correct {
+            border-color: var(--green);
+            background: var(--green-pale);
+        }
+
+        .quiz-card.answered-wrong {
+            border-color: var(--red);
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        .quiz-card .q-number {
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--blue-deep);
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-card .q-difficulty {
+            float: right;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.62rem; font-weight: 600;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .quiz-card .q-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .quiz-options { display: grid; gap: 0.5rem; }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+        }
+
+        .quiz-option:hover:not(.disabled) {
+            border-color: var(--blue);
+            background: var(--blue-pale);
+            color: var(--text);
+        }
+
+        .quiz-option .option-letter {
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.72rem; font-weight: 700;
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover:not(.disabled) .option-letter {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .quiz-option.selected-correct {
+            border-color: var(--green);
+            background: var(--green-pale);
+            color: var(--text);
+        }
+        .quiz-option.selected-correct .option-letter { background: var(--green); color: #fff; }
+
+        .quiz-option.selected-wrong {
+            border-color: var(--red);
+            background: var(--red-pale);
+            color: var(--text);
+        }
+        .quiz-option.selected-wrong .option-letter { background: var(--red); color: #fff; }
+
+        .quiz-option.reveal-correct {
+            border-color: var(--green);
+            background: var(--green-pale);
+        }
+        .quiz-option.reveal-correct .option-letter { background: var(--green); color: #fff; }
+
+        .quiz-option.disabled { cursor: default; opacity: 0.7; }
+
+        .quiz-explanation {
+            margin-top: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: none;
+        }
+        .quiz-explanation.visible { display: block; animation: detailReveal 0.3s ease-out; }
+        .quiz-explanation strong { color: var(--text); }
+
+        .quiz-reset-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .quiz-reset-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue-deep);
+            background: var(--blue-pale);
+        }
+
+        /* ---- Regression viz ---- */
+        .viz-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .viz-container h4 {
+            font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--blue-deep);
+            margin-bottom: 0.5rem;
+        }
+
+        .viz-instructions {
+            background: var(--blue-pale);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--blue);
+        }
+
+        .viz-instructions .viz-instr-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--blue-deep);
+            margin-bottom: 0.4rem;
+        }
+
+        .viz-instructions ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .viz-instructions ul li {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            padding: 0.2rem 0 0.2rem 1.2rem;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .viz-instructions ul li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0.55rem;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--blue);
+        }
+
+        .viz-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .viz-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .viz-legend-swatch {
+            width: 16px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .viz-legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .viz-stage {
+            margin-top: 0.4rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, #F8FBFE 0%, #F2F7FB 100%);
+            box-shadow: inset 0 0 0 1px rgba(126, 184, 218, 0.08);
+            overflow: hidden;
+        }
+
+        .viz-canvas {
+            display: block;
+            width: 100%;
+            height: 300px;
+            cursor: crosshair;
+        }
+
+        .viz-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .viz-stat {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .viz-stat strong {
+            color: var(--text);
+        }
+
+        /* ---- Confetti ---- */
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px; height: 10px;
+            top: -10px;
+            animation: confettiFall var(--fall-dur) var(--fall-delay) ease-in forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(var(--rotation)) scale(0.5); opacity: 0; }
+        }
+
+        @keyframes detailReveal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ---- Divider / Footer ---- */
+        .divider { height: 1px; background: var(--border); margin: 2rem 0; }
+
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-quaternary);
+        }
+
+        /* ---- Animations ---- */
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes slideUp { 0% { opacity: 0; transform: translateY(12px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            .page { padding: 1.5rem; }
+            .title { font-size: 1.8rem; }
+            .topics-grid { grid-template-columns: 1fr; }
+            .flow { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .flow-track, .flow-progress { display: none; }
+            .comparison-table { font-size: 0.75rem; }
+            .modal-box { padding: 1.25rem; width: 96%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .particle-canvas { display: none; }
+            .topic-card { opacity: 1; transform: none; }
+            .reveal-on-scroll { opacity: 1; transform: none; }
+        }
+
+        @media print {
+            .page { padding: 1.5rem; }
+            .particle-canvas { display: none; }
+            .topic-card, .quiz-card { break-inside: avoid; }
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <canvas class="particle-canvas" id="particleCanvas"></canvas>
+
+        <div class="page">
+        <!-- Header -->
+        <div class="header-bar">
+            <div class="header-logo">
+                <img src="data:image/png;base64,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" />
+            </div>
+            <span class="header-text">Data Science Learning Module</span>
+        </div>
+
+        <h1 class="title">Machine Learning & Modeling</h1>
+        <p class="intro">
+            A structured learning path from economic intuition to predictive modeling. Each topic builds on concepts you already know from statistics and econometrics, expanded with hands-on examples from the sugar industry.
+        </p>
+
+        <!-- Progress -->
+        <div class="progress-bar-container">
+            <div class="progress-label">
+                <span id="progressLabelText">Module Progress - Machine Learning</span>
+                <span class="progress-actions">
+                    <span id="progressPercent">0%</span>
+                    <button class="reset-progress-btn" type="button" onclick="resetProgress()">Reset Progress</button>
+                </span>
+            </div>
+        </div>
+
+        <!-- Flow -->
+        <div class="flow reveal-on-scroll">
+            <div class="flow-track" aria-hidden="true"></div>
+            <div class="flow-progress" id="flowProgressFill" aria-hidden="true"></div>
+            <div class="step" data-step="learn">
+                <div class="dot">1</div>
+                <h3>Learn</h3>
+                <p>Read through and undersatnd the lesson content per topic.</p>
+                <div class="step-meter"><div class="step-meter-fill" id="learnMeterFill"></div></div>
+                <div class="step-status" id="learnProgressText">0/0 topics read</div>
+            </div>
+            <div class="step" data-step="connect">
+                <div class="dot">2</div>
+                <h3>Connect</h3>
+                <p>Read through each Sugar Industry Example per topic.</p>
+                <div class="step-meter"><div class="step-meter-fill" id="connectMeterFill"></div></div>
+                <div class="step-status" id="connectProgressText">0/0 examples read</div>
+            </div>
+            <div class="step" data-step="test">
+                <div class="dot">3</div>
+                <h3>Test</h3>
+                <p>Hit "Start Quiz" to open graded questions.</p>
+                <div class="step-status" id="testStatusText">Quiz not opened</div>
+            </div>
+            <div class="step" data-step="master">
+                <div class="dot">4</div>
+                <h3>Master</h3>
+                <p>Step completes only when both quizzes are 80%+ and fully answered.</p>
+                <div class="step-status" id="masterStatusText">Need 80%+ on both quizzes</div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Tabs -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="ml" onclick="switchTab('ml')">
+                Machine Learning <span class="tab-badge">4 topics</span>
+            </button>
+            <button class="tab-btn" data-tab="modeling" onclick="switchTab('modeling')">
+                Modeling Techniques <span class="tab-badge">7 topics</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: ML -->
+        <div class="tab-content active" id="tab-ml">
+            <div class="topics-grid" id="ml-topics">
+
+                <div class="topic-card" onclick="openTopicModal('sl')">
+                    <div class="card-icon blue">SL</div>
+                    <h3>Supervised Learning</h3>
+                    <p class="card-subtitle">Learning from labeled data with known outputs, like studying from a textbook with answer keys.</p>
+                    <span class="card-tag beginner">Foundational</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('ul')">
+                    <div class="card-icon green">UL</div>
+                    <h3>Unsupervised Learning</h3>
+                    <p class="card-subtitle">Finding hidden patterns in data without labels, like discovering market segments nobody defined.</p>
+                    <span class="card-tag beginner">Foundational</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('rl')">
+                    <div class="card-icon orange">RL</div>
+                    <h3>Reinforcement Learning</h3>
+                    <p class="card-subtitle">Learning through trial, error, and reward signals, like training through incentives.</p>
+                    <span class="card-tag intermediate">Intermediate</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('vs')">
+                    <div class="card-icon purple">VS</div>
+                    <h3>Comparing Approaches</h3>
+                    <p class="card-subtitle">When to use which type: A decision framework grounded in your data situation.</p>
+                    <span class="card-tag beginner">Foundational</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+            </div>
+
+            <!-- ML Quiz Prompt -->
+            <div class="quiz-prompt reveal-on-scroll">
+                <h3>Ready to test your knowledge?</h3>
+                <p>5 graded questions covering supervised, unsupervised, and reinforcement learning.</p>
+                <button class="start-quiz-btn" onclick="openQuizModal('ml')">
+                    Start Quiz <span class="btn-arrow">&#8594;</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 2: MODELING -->
+        <div class="tab-content" id="tab-modeling">
+            <div class="topics-grid" id="modeling-topics">
+
+                <div class="topic-card" onclick="openTopicModal('slr')">
+                    <div class="card-icon blue">SLR</div>
+                    <h3>Simple Linear Regression</h3>
+                    <p class="card-subtitle">Predicting a value using one input variable, the workhorse of econometrics you already know.</p>
+                    <span class="card-tag beginner">Foundational</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('mlr')">
+                    <div class="card-icon green">MLR</div>
+                    <h3>Multiple Linear Regression</h3>
+                    <p class="card-subtitle">Predicting with multiple input variables -- controlling for confounders like in multivariate econometrics.</p>
+                    <span class="card-tag beginner">Foundational</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('bc')">
+                    <div class="card-icon orange">BC</div>
+                    <h3>Binary Classification</h3>
+                    <p class="card-subtitle">Two-class prediction -- pass/fail, buy/sell, approve/reject.</p>
+                    <span class="card-tag intermediate">Intermediate</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('mc')">
+                    <div class="card-icon purple">MC</div>
+                    <h3>Multi-class Classification</h3>
+                    <p class="card-subtitle">Predicting from more than two categories -- grading, sorting, routing.</p>
+                    <span class="card-tag intermediate">Intermediate</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('dt')">
+                    <div class="card-icon blue">DT</div>
+                    <h3>Decision Trees</h3>
+                    <p class="card-subtitle">A flowchart-like model that makes decisions through a series of yes/no questions.</p>
+                    <span class="card-tag intermediate">Intermediate</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('lr')">
+                    <div class="card-icon green">LR</div>
+                    <h3>Logistic Regression</h3>
+                    <p class="card-subtitle">The sigmoid function, log-odds, and probabilistic classification -- an economist's natural extension of OLS.</p>
+                    <span class="card-tag intermediate">Intermediate</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+
+                <div class="topic-card" onclick="openTopicModal('em')" style="grid-column: 1 / -1;">
+                    <div class="card-icon red">EM</div>
+                    <h3>Evaluation Metrics</h3>
+                    <p class="card-subtitle">How to measure whether your model is actually good -- accuracy, R-squared, error rates, and when each one lies to you.</p>
+                    <span class="card-tag beginner">Foundational</span>
+                    <div class="card-toggle">Click to learn more &#8594;</div>
+                </div>
+            </div>
+
+            <!-- Regression viz -->
+            <div class="viz-container reveal-on-scroll">
+                <h4>Interactive: Simple Linear Regression</h4>
+                <div class="viz-instructions">
+                    <div class="viz-instr-title">How to use this chart</div>
+                    <ul>
+                        <li><strong>Click anywhere</strong> on the grey area below to place a data point. Each click adds one observation with an X (temperature) and Y (yield) value.</li>
+                        <li>After placing <strong>2 or more points</strong>, a regression line will appear automatically, computed using ordinary least squares (OLS).</li>
+                        <li>The <strong>dashed purple lines</strong> show residuals, the vertical distance between each point and the regression line. OLS minimizes the sum of these squared distances.</li>
+                        <li>Watch how <strong>R-squared</strong> changes as you add points. Try placing points in a tight line (high R-squared) vs. scattered (low R-squared).</li>
+                        <li>Try adding an <strong>outlier</strong> far from the cluster to see how a single extreme point can pull the entire regression line.</li>
+                    </ul>
+                </div>
+                <div class="viz-stage">
+                    <canvas class="viz-canvas" id="regressionCanvas"></canvas>
+                </div>
+                <div class="viz-legend">
+                    <div class="viz-legend-item"><div class="viz-legend-dot" style="background: rgba(126, 184, 218, 0.7);"></div> Data points</div>
+                    <div class="viz-legend-item"><div class="viz-legend-swatch" style="background: rgba(123, 200, 164, 0.9);"></div> Regression line (OLS best fit)</div>
+                    <div class="viz-legend-item"><div class="viz-legend-swatch" style="background: rgba(176, 143, 204, 0.5); border-style: dashed;"></div> Residuals (prediction error)</div>
+                </div>
+                <div class="viz-stats" id="regressionStats"></div>
+                <button class="quiz-reset-btn" onclick="resetRegression()" style="margin-top: 0.75rem;">&#8634; Clear All Points</button>
+            </div>
+
+            <!-- Modeling Quiz Prompt -->
+            <div class="quiz-prompt reveal-on-scroll">
+                <h3>Test your modeling knowledge</h3>
+                <p>7 graded questions on regression, classification, decision trees, and evaluation metrics.</p>
+                <button class="start-quiz-btn" onclick="openQuizModal('modeling')">
+                    Start Quiz <span class="btn-arrow">&#8594;</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Economics Bridge -->
+        <div class="divider"></div>
+        <div class="bridge-prompt reveal-on-scroll" onclick="openBridgeModal()">
+            <h3>Economics to Data Science Bridge</h3>
+            <p>You already know more than you think. See how some concepts from your economics training map directly to data science terminology.</p>
+            <button class="bridge-btn" onclick="event.stopPropagation(); openBridgeModal()">
+                View Concept Map <span>&#8594;</span>
+            </button>
+        </div>
+
+        <div class="footer">
+            <span>Data Science Learning Module created for Arjun Shirgaokar</span>
+            <span>© Findability Sciences 2026</span>
+        </div>
+    </div>
+
+    <!-- TOPIC DETAIL MODAL (reusable) -->
+    <div class="modal-overlay" id="modal-topic" onclick="closeModalOnBg(event, 'topic')">
+        <div class="modal-box" id="topic-modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeQuizModal('topic')">&#10005;</button>
+            <div class="modal-header">
+                <h2 id="topic-modal-title">Topic</h2>
+            </div>
+            <div class="topic-detail-content" id="topic-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- BRIDGE MODAL -->
+    <div class="modal-overlay" id="modal-bridge" onclick="closeModalOnBg(event, 'bridge')">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeQuizModal('bridge')">&#10005;</button>
+            <div class="modal-header">
+                <h2>Economics to Data Science Bridge</h2>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.5;">
+                You already know more than you think. Here is how concepts from your economics training map directly to data science terminology.
+            </p>
+            <table class="comparison-table">
+                <thead><tr><th>Economics Concept</th><th>Data Science Equivalent</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>OLS Regression</strong></td><td>Supervised learning (regression)</td></tr>
+                    <tr><td><strong>Probit / Logit models</strong></td><td>Logistic regression / binary classification</td></tr>
+                    <tr><td><strong>Multinomial Logit</strong></td><td>Multi-class classification (softmax)</td></tr>
+                    <tr><td><strong>Factor Analysis</strong></td><td>PCA (unsupervised, dimensionality reduction)</td></tr>
+                    <tr><td><strong>Cluster Analysis</strong></td><td>K-Means, hierarchical clustering</td></tr>
+                    <tr><td><strong>Dynamic Programming</strong></td><td>Reinforcement learning (Bellman equation)</td></tr>
+                    <tr><td><strong>Endogeneity / OVB</strong></td><td>Feature selection, confounding variables</td></tr>
+                    <tr><td><strong>Overfitting / "kitchen sink"</strong></td><td>Regularization (Lasso, Ridge), cross-validation</td></tr>
+                    <tr><td><strong>Type I / Type II errors</strong></td><td>False positives / false negatives (precision / recall)</td></tr>
+                    <tr><td><strong>Adjusted R-squared</strong></td><td>Cross-validated R-squared, information criteria</td></tr>
+                    <tr><td><strong>Marginal effects (in logit)</strong></td><td>Interpreting sigmoid probabilities vs. log-odds</td></tr>
+                    <tr><td><strong>Structural breaks</strong></td><td>Distribution shift / concept drift</td></tr>
+                    <tr><td><strong>Ceteris paribus</strong></td><td>Coefficient interpretation in multiple regression</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- QUIZ MODALS -->
+    <div class="modal-overlay" id="modal-ml" onclick="closeModalOnBg(event, 'ml')">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeQuizModal('ml')">&#10005;</button>
+            <div class="modal-header">
+                <h2>Machine Learning Quiz</h2>
+                <div class="quiz-score">
+                    <div class="score-ring">
+                        <svg width="48" height="48" viewBox="0 0 48 48">
+                            <circle class="track" cx="24" cy="24" r="22"/>
+                            <circle class="fill" id="ml-score-ring" cx="24" cy="24" r="22"/>
+                        </svg>
+                        <span class="score-text" id="ml-score-text">0/5</span>
+                    </div>
+                    <span class="score-label">Score</span>
+                </div>
+            </div>
+            <div id="ml-quiz-container"></div>
+            <button class="quiz-reset-btn" onclick="resetQuiz('ml')">&#8634; Reset Quiz</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-modeling" onclick="closeModalOnBg(event, 'modeling')">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeQuizModal('modeling')">&#10005;</button>
+            <div class="modal-header">
+                <h2>Modeling Techniques Quiz</h2>
+                <div class="quiz-score">
+                    <div class="score-ring">
+                        <svg width="48" height="48" viewBox="0 0 48 48">
+                            <circle class="track" cx="24" cy="24" r="22"/>
+                            <circle class="fill" id="modeling-score-ring" cx="24" cy="24" r="22"/>
+                        </svg>
+                        <span class="score-text" id="modeling-score-text">0/7</span>
+                    </div>
+                    <span class="score-label">Score</span>
+                </div>
+            </div>
+            <div id="modeling-quiz-container"></div>
+            <button class="quiz-reset-btn" onclick="resetQuiz('modeling')">&#8634; Reset Quiz</button>
+        </div>
+    </div>
+
+    <script>
+    // ============================================
+    // TOPIC CONTENT DATA
+    // ============================================
+    const topicContent = {
+        sl: {
+            title: 'Supervised Learning',
+            body: `
+                <h4>How It Works</h4>
+                <p>The algorithm receives input-output pairs (features and labels) and learns a mapping function. Think of it like an economics student who studies past GDP data alongside the policies that produced them. The model finds patterns that let it predict outcomes for new, unseen inputs.</p>
+                <h4>Key Concepts</h4>
+                <ul>
+                    <li><strong>Features (X):</strong> The input variables (e.g., rainfall, soil pH, fertilizer amount)</li>
+                    <li><strong>Labels (y):</strong> The known outcome you want to predict (e.g., sugar yield in tons)</li>
+                    <li><strong>Training set:</strong> Historical data used to learn patterns</li>
+                    <li><strong>Test set:</strong> Held-out data to check if the model generalizes</li>
+                    <li><strong>Two main types:</strong> Regression (continuous output) and Classification (categorical output)</li>
+                </ul>
+                <div class="formula-box">Goal: Learn f such that y = f(X) + error<br>Minimize: Sum of (actual - predicted)^2</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A sugar mill collects 5 years of data: soil moisture, temperature, fertilizer used, and the resulting sugar yield per hectare. A supervised model learns from these labeled examples so that next season, given new field conditions, it can predict expected yield before harvest.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p>More data does not always mean better predictions. If your training data has systematic bias (e.g., only data from irrigated farms), the model will fail on rain-fed farms. This is called <strong>distribution shift</strong>, and it is the most common reason real-world models underperform.</p></div>
+            `
+        },
+        ul: {
+            title: 'Unsupervised Learning',
+            body: `
+                <h4>How It Works</h4>
+                <p>Unlike supervised learning, there are no "right answers" to learn from. The algorithm explores the data's structure on its own. In economics, this is similar to factor analysis or principal components, you let the data reveal its own groupings and dimensions.</p>
+                <h4>Key Techniques</h4>
+                <ul>
+                    <li><strong>Clustering (K-Means, DBSCAN):</strong> Group similar data points together</li>
+                    <li><strong>Dimensionality Reduction (PCA):</strong> Compress many variables into fewer meaningful ones</li>
+                    <li><strong>Association Rules:</strong> Find items that frequently co-occur</li>
+                    <li><strong>Anomaly Detection:</strong> Identify unusual observations that don't fit any group</li>
+                </ul>
+                <div class="formula-box">K-Means objective: Minimize sum over all clusters of<br>sum of ||x_i - centroid_k||^2<br>(each point assigned to nearest cluster center)</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A cooperative manages 200 farms but has never formally categorized them. By feeding farm-level data (acreage, yield, soil type, water access, equipment) into a clustering algorithm, three natural segments emerge: high-tech irrigated farms, traditional rain-fed plots, and mid-scale transitioning farms.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p>Clusters are not "truth", they are mathematical groupings that depend heavily on which features you include and how you scale them. Running K-Means on unscaled data where one variable ranges 0-1000 and another 0-1 will make the model care almost entirely about the larger variable.</p></div>
+            `
+        },
+        rl: {
+            title: 'Reinforcement Learning',
+            body: `
+                <h4>How It Works</h4>
+                <p>An agent takes actions in an environment, receives rewards or penalties, and learns a strategy (policy) that maximizes cumulative reward over time. Economists will recognize this as a dynamic optimization problem, similar to how firms decide pricing over multiple periods under uncertainty.</p>
+                <h4>Key Concepts</h4>
+                <ul>
+                    <li><strong>Agent:</strong> The decision-maker (e.g., an irrigation controller)</li>
+                    <li><strong>Environment:</strong> The system the agent interacts with (e.g., the field + weather)</li>
+                    <li><strong>State:</strong> Current situation (e.g., soil moisture level, crop stage)</li>
+                    <li><strong>Action:</strong> What the agent can do (e.g., irrigate now, wait, reduce water)</li>
+                    <li><strong>Reward:</strong> Feedback signal (e.g., +yield, -water cost)</li>
+                    <li><strong>Policy:</strong> The learned strategy mapping states to actions</li>
+                </ul>
+                <div class="formula-box">Maximize: E[sum of gamma^t * R_t]<br>where gamma (0 to 1) is the discount factor<br>R_t is the reward at time step t</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>An RL agent controls drip irrigation for a sugarcane field. Each day it observes soil moisture, weather forecast, and crop growth stage (state), then decides how much water to release (action). It gets rewarded for high sugar content at harvest and penalized for water waste.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p>RL requires enormous amounts of interaction (data). In most business contexts, you cannot run thousands of experiments on real fields. That's why RL often needs a <strong>simulator</strong> first. Without one, supervised learning is almost always more practical.</p></div>
+            `
+        },
+        vs: {
+            title: 'Comparing Approaches',
+            body: `
+                <h4>Decision Framework</h4>
+                <ul>
+                    <li><strong>Do you have labeled outcomes?</strong> Yes -> Supervised. No -> Unsupervised or RL.</li>
+                    <li><strong>Is it a sequential decision?</strong> Yes -> Consider RL. No -> Supervised or Unsupervised.</li>
+                    <li><strong>Do you want to predict or discover?</strong> Predict -> Supervised. Discover structure -> Unsupervised.</li>
+                </ul>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A sugar company needs three decisions at once: forecast next-quarter yield (supervised), segment farms by management style for training plans (unsupervised), and optimize irrigation over the season under changing weather (reinforcement learning). The framework helps pick the right method for each problem instead of forcing one model everywhere.</p></div>
+                <div style="overflow-x: auto; margin-top: 1rem;">
+                    <table class="comparison-table">
+                        <thead><tr><th>Aspect</th><th>Supervised</th><th>Unsupervised</th><th>Reinforcement</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Data needed</strong></td><td>Labeled input-output pairs</td><td>Unlabeled data only</td><td>Environment + reward signal</td></tr>
+                            <tr><td><strong>Goal</strong></td><td>Predict outcomes</td><td>Find patterns / groups</td><td>Maximize cumulative reward</td></tr>
+                            <tr><td><strong>Econ analogy</strong></td><td>Econometric regression</td><td>Factor analysis / PCA</td><td>Dynamic programming</td></tr>
+                            <tr><td><strong>Sugar example</strong></td><td>Predict yield from inputs</td><td>Segment farms into tiers</td><td>Optimize irrigation policy</td></tr>
+                            <tr><td><strong>Difficulty</strong></td><td>Moderate</td><td>Moderate</td><td>High</td></tr>
+                            <tr><td><strong>When to start</strong></td><td>Day 1 -- most common</td><td>When exploring data</td><td>After mastering supervised</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            `
+        },
+        slr: {
+            title: 'Simple Linear Regression',
+            body: `
+                <h4>Core Idea</h4>
+                <p>Fit a straight line through data points to describe the relationship between one independent variable (X) and one dependent variable (y). You already do this in economics when you regress consumer spending on income.</p>
+                <h4>The Model</h4>
+                <div class="formula-box">y = b0 + b1 * X + error<br><br>b1 = Cov(X, y) / Var(X)<br>b0 = mean(y) - b1 * mean(X)<br><br>b1 = slope (change in y per unit change in X)<br>b0 = intercept (predicted y when X = 0)</div>
+                <h4>Assumptions (OLS)</h4>
+                <ul>
+                    <li>Linear relationship between X and y</li>
+                    <li>Errors are independent and normally distributed</li>
+                    <li>Constant variance of errors (homoscedasticity)</li>
+                    <li>No extreme outliers distorting the line</li>
+                </ul>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Plot average daily temperature (X) against sugar yield per hectare (y) across 50 growing seasons. The regression line shows that each 1 degree C increase in average temperature is associated with a 0.8 ton decrease in yield above 32 degrees C. R-squared of 0.62 tells you temperature alone explains 62% of yield variation.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Correlation is not causation.</strong> Your regression may show ice cream sales predict drowning deaths, but swimming weather causes both. Always think about confounding variables.</p></div>
+            `
+        },
+        mlr: {
+            title: 'Multiple Linear Regression',
+            body: `
+                <h4>Core Idea</h4>
+                <p>Extend simple regression to include multiple predictors. Each coefficient represents the effect of that variable <em>holding all others constant</em>, exactly the ceteris paribus interpretation from economics.</p>
+                <div class="formula-box">y = b0 + b1*X1 + b2*X2 + ... + bp*Xp + error<br><br>Each b_j = marginal effect of X_j on y,<br>holding all other X variables constant</div>
+                <h4>Key Considerations</h4>
+                <ul>
+                    <li><strong>Multicollinearity:</strong> When predictors are highly correlated, coefficients become unstable. Check with VIF.</li>
+                    <li><strong>Adjusted R-squared:</strong> Penalizes adding variables that don't help. Always prefer over raw R-squared.</li>
+                    <li><strong>Feature selection:</strong> Not every variable should go in. Use domain knowledge first.</li>
+                </ul>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Predict sugar yield using temperature, rainfall, soil pH, fertilizer (kg/hectare), and days since last harvest. After controlling for weather, each additional 10 kg of fertilizer increases yield by 0.3 tons - but the VIF for temperature and rainfall is 4.8, suggesting they share information.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Throwing in every variable</strong> does not make a better model. Each added variable risks overfitting. A model with 20 features on 25 data points will fit perfectly but predict terribly.</p></div>
+            `
+        },
+        bc: {
+            title: 'Binary Classification',
+            body: `
+                <h4>Core Idea</h4>
+                <p>Instead of predicting a continuous number, you predict which of two categories an observation belongs to. The output is a probability between 0 and 1.</p>
+                <div class="formula-box">Logistic Regression:<br>P(y=1|X) = 1 / (1 + e^(-(b0 + b1*X1 + ... + bp*Xp)))<br><br>The "sigmoid" function squashes any value into [0, 1]<br>If P >= 0.5, predict class 1; otherwise class 0</div>
+                <h4>Key Metrics</h4>
+                <ul>
+                    <li><strong>Accuracy:</strong> % of correct predictions overall</li>
+                    <li><strong>Precision:</strong> Of those predicted positive, how many truly are?</li>
+                    <li><strong>Recall:</strong> Of all actual positives, how many did we catch?</li>
+                    <li><strong>Confusion Matrix:</strong> 2x2 table of TP, FP, FN, TN</li>
+                </ul>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A sugar mill's quality lab tests each batch: does it pass the export standard? Features: sucrose concentration, color score, ash content, moisture %. The logistic model achieves 91% accuracy, but more importantly 95% recall - catching almost all below-standard batches.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Accuracy is misleading with imbalanced classes.</strong> If 95% of batches pass, a model that always says "pass" gets 95% accuracy but is useless.</p></div>
+            `
+        },
+        mc: {
+            title: 'Multi-class Classification',
+            body: `
+                <h4>Core Idea</h4>
+                <p>Extend binary classification to handle 3+ categories. The model outputs a probability for each class, and the highest probability wins.</p>
+                <h4>Strategies</h4>
+                <ul>
+                    <li><strong>One-vs-Rest (OvR):</strong> Train N separate binary classifiers. Pick the highest confidence.</li>
+                    <li><strong>Softmax (multinomial):</strong> A single model outputting probabilities for all classes, summing to 1.</li>
+                </ul>
+                <div class="formula-box">Softmax: P(class_k) = e^(z_k) / sum(e^(z_j) for all j)<br><br>where z_k = b0_k + b1_k*X1 + ... + bp_k*Xp<br>Each class has its own set of coefficients</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Grade refined sugar into Premium (A), Standard (B), and Below-grade (C). The softmax model predicts: "72% probability Premium, 24% Standard, 4% Below-grade." The mill uses these grades for pricing and routing.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Treating ordinal data as nominal.</strong> Grades A > B > C have a natural ordering. Standard multi-class models ignore this. Consider ordinal regression instead.</p></div>
+            `
+        },
+        dt: {
+            title: 'Decision Trees',
+            body: `
+                <h4>Core Idea</h4>
+                <p>The model asks a sequence of questions about the features, splitting the data at each step. "Is temperature > 35 C? Is rainfall < 50mm?" It is the most interpretable ML model.</p>
+                <h4>How Splits Are Chosen</h4>
+                <ul>
+                    <li><strong>Gini Impurity:</strong> Measures how "mixed" a node is. Pure node = Gini 0.</li>
+                    <li><strong>Entropy / Information Gain:</strong> Measures "surprise" in a node.</li>
+                    <li><strong>For regression trees:</strong> Splits minimize MSE within each leaf.</li>
+                </ul>
+                <div class="formula-box">Gini = 1 - sum(p_k^2) for all classes k<br>Entropy = -sum(p_k * log2(p_k)) for all classes k<br><br>where p_k = proportion of class k in the node</div>
+                <h4>Controlling Complexity</h4>
+                <ul>
+                    <li><strong>Max depth:</strong> Limit how deep the tree can grow</li>
+                    <li><strong>Min samples per leaf:</strong> Require minimum observations per endpoint</li>
+                    <li><strong>Pruning:</strong> Grow full tree then cut back unhelpful branches</li>
+                </ul>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A decision tree classifies whether a field will have "good" or "poor" harvest. First split: "Is irrigation available?" For irrigated fields: "Is soil pH between 6.0-7.5?" So interpretable that farm managers can follow it without technical background.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Overfitting.</strong> An unpruned tree memorizes every training example. A tree with 100 leaves for 100 points is just memorizing the answer key. Always limit depth.</p></div>
+            `
+        },
+        lr: {
+            title: 'Logistic Regression',
+            body: `
+                <h4>Core Idea</h4>
+                <p>Despite the name, logistic regression is a <em>classification</em> algorithm. It models the log-odds of the outcome as a linear function of features. Economists who have done probit/logit models will find this very familiar.</p>
+                <h4>The Sigmoid Function</h4>
+                <div class="formula-box">sigma(z) = 1 / (1 + e^(-z))<br><br>Properties:<br>- Output always between 0 and 1<br>- When z = 0, sigma = 0.5 (decision boundary)<br>- Symmetric: sigma(-z) = 1 - sigma(z)</div>
+                <h4>Interpreting Coefficients</h4>
+                <ul>
+                    <li>Each b_j = change in <strong>log-odds</strong> for a one-unit increase in X_j</li>
+                    <li>e^(b_j) gives the <strong>odds ratio</strong> - more intuitive</li>
+                    <li>If e^(b_j) = 1.5, a one-unit increase multiplies odds by 1.5</li>
+                </ul>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Model probability a batch passes export quality. Coefficient for ash content: b = -2.3, so e^(-2.3) = 0.10. Each 1% increase in ash content multiplies the odds of passing by 0.10 - effectively dividing them by 10.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Interpreting coefficients as probabilities.</strong> A coefficient of 0.5 does NOT mean "50% more likely." It means log-odds increase by 0.5. The probability change depends on where you are on the sigmoid curve.</p></div>
+            `
+        },
+        em: {
+            title: 'Evaluation Metrics',
+            body: `
+                <h4>Regression Metrics</h4>
+                <div class="formula-box">R-squared = 1 - (SS_res / SS_tot)<br>&nbsp;&nbsp;Range: 0 to 1<br><br>MSE = (1/n) * sum((actual - predicted)^2)<br>MAE = (1/n) * sum(|actual - predicted|)<br>RMSE = sqrt(MSE)  -- same units as target</div>
+                <h4>Classification Metrics</h4>
+                <div class="formula-box">Accuracy  = (TP + TN) / (TP + TN + FP + FN)<br>Precision = TP / (TP + FP)<br>Recall    = TP / (TP + FN)<br>F1 Score  = 2 * (Precision * Recall) / (Precision + Recall)</div>
+                <h4>The Confusion Matrix</h4>
+                <div class="formula-box" style="text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Predicted + | Predicted - |<br>Actual + &nbsp;|&nbsp;&nbsp;&nbsp; TP &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; FN &nbsp;&nbsp;&nbsp;&nbsp;|<br>Actual - &nbsp;|&nbsp;&nbsp;&nbsp; FP &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; TN &nbsp;&nbsp;&nbsp;&nbsp;|</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Your yield model has RMSE 1.2 tons/hectare and R-squared 0.78. Your quality classifier has 91% accuracy but only 60% recall for defects - 40% of bad batches slip through. The F1 score of 0.72 better captures this imbalance.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Using the wrong metric for your business problem.</strong> A fraud detection model with 99.9% accuracy sounds great until you realize it just says "not fraud" to everything. Pick metrics aligned with the cost of errors.</p></div>
+            `
+        }
+    };
+
+    // ============================================
+    // QUIZ DATA (with randomized correct answer positions)
+    // ============================================
+    function shuffleOptions(question) {
+        const indices = question.options.map((_, i) => i);
+        // Fisher-Yates shuffle
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const shuffledOptions = indices.map(i => question.options[i]);
+        const newCorrect = indices.indexOf(question.correct);
+        return { ...question, options: shuffledOptions, correct: newCorrect };
+    }
+
+    const quizDataRaw = {
+        ml: [
+            {
+                question: "A sugar cooperative wants to predict next season's yield based on historical weather and soil data. Which type of learning is most appropriate?",
+                options: [
+                    "Unsupervised Learning: because they need to discover patterns first",
+                    "Supervised Learning: because they have historical input-output pairs",
+                    "Reinforcement Learning: because yield changes over time",
+                    "Semi-supervised Learning: because some seasons have missing data"
+                ],
+                correct: 1, difficulty: "beginner",
+                explanation: "They have labeled historical data (weather/soil as inputs, yield as output), making this a classic supervised learning problem."
+            },
+            {
+                question: "A farm manager runs K-Means clustering on farm data and gets 4 clusters. She scales the data first by subtracting the mean and dividing by the standard deviation. Why is this scaling step critical?",
+                options: [
+                    "It makes the algorithm run faster",
+                    "It converts the data to a normal distribution",
+                    "It ensures variables measured in different units contribute equally to distance calculations",
+                    "It is required by law in agricultural data analysis"
+                ],
+                correct: 2, difficulty: "intermediate",
+                explanation: "K-Means uses Euclidean distance. Without scaling, a variable ranging 0-10000 would dominate over one ranging 0-10. Standardization puts all variables on the same scale."
+            },
+            {
+                question: "In reinforcement learning, the 'discount factor' (gamma) controls how much the agent values future rewards vs. immediate ones. If gamma = 0, what happens?",
+                options: [
+                    "The agent weights all rewards equally regardless of timing",
+                    "The agent ignores all rewards entirely",
+                    "The model becomes equivalent to supervised learning",
+                    "The agent only cares about the immediate next reward, ignoring all future consequences"
+                ],
+                correct: 3, difficulty: "intermediate",
+                explanation: "When gamma = 0, future rewards are multiplied by 0. The agent becomes purely myopic, like a firm maximizing only this quarter's profit."
+            },
+            {
+                question: "An analyst clusters customer data into 3 segments and presents them as 'the three real customer types.' What is the fundamental problem with this claim?",
+                options: [
+                    "Three clusters is always too few",
+                    "Customers cannot be categorized",
+                    "The analyst should have used 5 clusters instead",
+                    "Clustering algorithms always find groups even in random data - clusters are mathematical constructs, not necessarily real types"
+                ],
+                correct: 3, difficulty: "advanced",
+                explanation: "K-Means will always partition data into K groups, even if no real structure exists. Clusters reflect the algorithm's assumptions and chosen features. They are useful simplifications, not discovered truths."
+            },
+            {
+                question: "Which statement best captures the relationship between supervised, unsupervised, and reinforcement learning?",
+                options: [
+                    "They address fundamentally different data situations: labeled data, unlabeled data, and sequential decision-making with feedback",
+                    "They are ranked by difficulty: unsupervised is easiest, reinforcement is hardest",
+                    "Reinforcement learning subsumes both other types and should be used whenever possible",
+                    "Supervised learning is always preferred because it gives the most accurate results"
+                ],
+                correct: 0, difficulty: "beginner",
+                explanation: "Each paradigm answers a different question. Supervised: 'predict Y from X'. Unsupervised: 'what structure exists?' Reinforcement: 'what actions maximize reward?' The right choice depends on your problem."
+            }
+        ],
+        modeling: [
+            {
+                question: "In a simple linear regression of sugar yield on rainfall, the slope coefficient is 0.15 and R-squared is 0.45. Which interpretation is correct?",
+                options: [
+                    "There is a 15% chance of increased yield and a 45% chance the model is right",
+                    "The model predicts yield will be 0.15 tons when there is no rainfall",
+                    "Each additional mm of rainfall is associated with a 0.15 ton increase in yield, and rainfall explains 45% of the variance in yield",
+                    "Rainfall causes a 0.15 ton increase in yield, and 45% of the time this prediction is correct"
+                ],
+                correct: 2, difficulty: "beginner",
+                explanation: "The slope (0.15) gives the average change in Y per unit change in X. R-squared (0.45) means 45% of yield variation is explained by rainfall. This is association, not causation."
+            },
+            {
+                question: "You are building a multiple regression model and notice that the VIF for temperature is 8.5. What does this indicate?",
+                options: [
+                    "The model has 8.5 times more variance than expected, collect more data",
+                    "Temperature is highly correlated with other predictors, making its coefficient estimate unreliable. Consider removing one correlated variable or using regularization",
+                    "Temperature is the most important predictor - keep it and remove others",
+                    "The temperature coefficient is inflated by 8.5 times, so divide by 8.5"
+                ],
+                correct: 1, difficulty: "intermediate",
+                explanation: "VIF > 5-10 signals problematic multicollinearity. Options: remove one correlated variable, combine them via PCA, or use ridge regression."
+            },
+            {
+                question: "A quality control model classifies sugar batches as pass/fail. On 1000 batches: 900 pass, 100 fail. The model predicts 'pass' for everything (90% accuracy). What is its recall for detecting failed batches?",
+                options: [
+                    "100%: because accuracy is 90%",
+                    "90%",
+                    "10%: because 100 out of 1000 batches failed",
+                    "0%: it never predicts 'fail', so it catches none of the actual failures"
+                ],
+                correct: 3, difficulty: "intermediate",
+                explanation: "Recall = TP / (TP + FN). The model predicts 'fail' zero times, so TP = 0 and FN = 100. Recall = 0%. This is why accuracy alone is misleading for imbalanced datasets."
+            },
+            {
+                question: "A decision tree for classifying loan defaults splits first on income, then on employment length. If you do not limit tree depth, what problem is most likely?",
+                options: [
+                    "The tree will ignore income as a feature",
+                    "The tree will be too simple and miss important patterns (underfitting)",
+                    "The tree will memorize training data specifics that do not generalize (overfitting)",
+                    "The tree will become a neural network"
+                ],
+                correct: 2, difficulty: "intermediate",
+                explanation: "An unlimited decision tree can create a unique leaf for every training example -> 100% training accuracy but terrible test performance."
+            },
+            {
+                question: "In logistic regression, a coefficient of 0.7 for 'years of education' means:",
+                options: [
+                    "Education explains 70% of the variance in the outcome",
+                    "Each additional year increases the probability of the outcome by 70%",
+                    "Each additional year increases the log-odds by 0.7, meaning odds are multiplied by e^0.7 (approximately 2.01)",
+                    "The model is 70% confident in the education variable"
+                ],
+                correct: 2, difficulty: "advanced",
+                explanation: "Logistic regression models log-odds. A coefficient of 0.7 means log-odds increase by 0.7 per unit. e^0.7 = 2.01, so the odds roughly double per year of education."
+            },
+            {
+                question: "You are grading sugar into three categories (Premium, Standard, Below-grade). Which approach explicitly preserves the natural ordering?",
+                options: [
+                    "Random Forest classifier with 3 output classes",
+                    "One-vs-Rest with logistic regression",
+                    "Ordinal regression, which models cumulative probabilities P(Y <= k) for each threshold",
+                    "K-Means clustering with 3 clusters"
+                ],
+                correct: 2, difficulty: "advanced",
+                explanation: "Premium > Standard > Below-grade is ordinal. Ordinal regression models cumulative probabilities, producing predictions that respect the grade hierarchy."
+            },
+            {
+                question: "Your yield prediction model: Training RMSE = 0.3 tons, Test RMSE = 2.8 tons, Training R-squared = 0.99, Test R-squared = 0.41. What is happening?",
+                options: [
+                    "This is normal performance and the model is ready for deployment",
+                    "The test data is corrupted and should be discarded",
+                    "The model is underfitting - it needs more features",
+                    "The model is overfitting - it memorized training data but fails to generalize"
+                ],
+                correct: 3, difficulty: "intermediate",
+                explanation: "The huge gap between training and test performance (0.3 vs 2.8 RMSE) is the textbook signature of overfitting. Remedies: simplify the model, regularize, get more data."
+            }
+        ]
+    };
+
+    // Shuffle each quiz's options on page load
+    let quizData = {};
+    function initQuizData() {
+        quizData = {
+            ml: quizDataRaw.ml.map(q => shuffleOptions(q)),
+            modeling: quizDataRaw.modeling.map(q => shuffleOptions(q))
+        };
+    }
+    initQuizData();
+
+    // ============================================
+    // QUIZ ENGINE
+    // ============================================
+    const quizState = {
+        ml: { answered: {}, correct: 0 },
+        modeling: { answered: {}, correct: 0 }
+    };
+    const tabTopicMap = {
+        ml: ['sl', 'ul', 'rl', 'vs'],
+        modeling: ['slr', 'mlr', 'bc', 'mc', 'dt', 'lr', 'em']
+    };
+    const topicToTab = Object.fromEntries(
+        Object.entries(tabTopicMap).flatMap(([tab, topicIds]) => topicIds.map(topicId => [topicId, tab]))
+    );
+    const progressTabLabels = {
+        ml: 'Machine Learning',
+        modeling: 'Modeling Techniques'
+    };
+    const progressState = {
+        ml: { readTopics: new Set(), readExamples: new Set(), quizOpened: false },
+        modeling: { readTopics: new Set(), readExamples: new Set(), quizOpened: false }
+    };
+    let activeProgressTab = 'ml';
+    let activeTopicSession = null;
+    const PROGRESS_STORAGE_KEY = 'ml-learning-module-progress-v1';
+
+    const TOPIC_READ_MIN_MS = 4500;
+    const TOPIC_READ_SCROLL_THRESHOLD = 0.86;
+    const EXAMPLE_READ_MIN_MS = 1800;
+
+    function isValidQuizDataSnapshot(snapshot) {
+        if (!snapshot || typeof snapshot !== 'object') return false;
+        for (const section of ['ml', 'modeling']) {
+            if (!Array.isArray(snapshot[section]) || snapshot[section].length !== quizDataRaw[section].length) return false;
+            for (let i = 0; i < snapshot[section].length; i++) {
+                const savedQ = snapshot[section][i];
+                const rawQ = quizDataRaw[section][i];
+                if (!savedQ || savedQ.question !== rawQ.question) return false;
+                if (!Array.isArray(savedQ.options) || savedQ.options.length !== rawQ.options.length) return false;
+                if (!Number.isInteger(savedQ.correct) || savedQ.correct < 0 || savedQ.correct >= savedQ.options.length) return false;
+            }
+        }
+        return true;
+    }
+
+    function sanitizeAnsweredMap(section, answeredMap) {
+        const sanitized = {};
+        if (!answeredMap || typeof answeredMap !== 'object') return sanitized;
+        const totalQuestions = quizData[section].length;
+        Object.entries(answeredMap).forEach(([qIdxRaw, optIdxRaw]) => {
+            const qIdx = Number(qIdxRaw);
+            const optIdx = Number(optIdxRaw);
+            if (!Number.isInteger(qIdx) || qIdx < 0 || qIdx >= totalQuestions) return;
+            const optionsCount = quizData[section][qIdx].options.length;
+            if (!Number.isInteger(optIdx) || optIdx < 0 || optIdx >= optionsCount) return;
+            sanitized[qIdx] = optIdx;
+        });
+        return sanitized;
+    }
+
+    function countCorrectAnswers(section, answeredMap = quizState[section].answered) {
+        return Object.entries(answeredMap).reduce((sum, [qIdxRaw, selectedIdxRaw]) => {
+            const qIdx = Number(qIdxRaw);
+            const selectedIdx = Number(selectedIdxRaw);
+            const question = quizData[section][qIdx];
+            if (!question) return sum;
+            return sum + (selectedIdx === question.correct ? 1 : 0);
+        }, 0);
+    }
+
+    function savePersistentState() {
+        try {
+            const payload = {
+                activeProgressTab,
+                progressState: {
+                    ml: {
+                        readTopics: Array.from(progressState.ml.readTopics),
+                        readExamples: Array.from(progressState.ml.readExamples),
+                        quizOpened: progressState.ml.quizOpened
+                    },
+                    modeling: {
+                        readTopics: Array.from(progressState.modeling.readTopics),
+                        readExamples: Array.from(progressState.modeling.readExamples),
+                        quizOpened: progressState.modeling.quizOpened
+                    }
+                },
+                quizState: {
+                    ml: { answered: quizState.ml.answered },
+                    modeling: { answered: quizState.modeling.answered }
+                },
+                quizData
+            };
+            localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(payload));
+        } catch (e) {}
+    }
+
+    function loadPersistentState() {
+        try {
+            const raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
+            if (!raw) return;
+            const parsed = JSON.parse(raw);
+
+            if (parsed && typeof parsed === 'object') {
+                if (parsed.activeProgressTab === 'ml' || parsed.activeProgressTab === 'modeling') {
+                    activeProgressTab = parsed.activeProgressTab;
+                }
+
+                const parsedProgress = parsed.progressState || {};
+                ['ml', 'modeling'].forEach(tab => {
+                    const tabState = parsedProgress[tab] || {};
+                    const validTopics = new Set(tabTopicMap[tab]);
+                    const readTopics = Array.isArray(tabState.readTopics) ? tabState.readTopics : [];
+                    const readExamples = Array.isArray(tabState.readExamples) ? tabState.readExamples : [];
+                    progressState[tab].readTopics = new Set(readTopics.filter(topicId => validTopics.has(topicId)));
+                    progressState[tab].readExamples = new Set(readExamples.filter(topicId => validTopics.has(topicId)));
+                    progressState[tab].quizOpened = !!tabState.quizOpened;
+                });
+
+                const canRestoreQuizAnswers = isValidQuizDataSnapshot(parsed.quizData);
+                if (canRestoreQuizAnswers) {
+                    quizData = parsed.quizData;
+                }
+
+                if (canRestoreQuizAnswers) {
+                    const parsedQuizState = parsed.quizState || {};
+                    ['ml', 'modeling'].forEach(section => {
+                        const answered = sanitizeAnsweredMap(section, parsedQuizState[section]?.answered);
+                        quizState[section].answered = answered;
+                        quizState[section].correct = countCorrectAnswers(section, answered);
+                    });
+                }
+            }
+        } catch (e) {}
+    }
+
+    function getTopicTab(topicId) {
+        return topicToTab[topicId] || 'ml';
+    }
+
+    function getTopicModalBox() {
+        return document.getElementById('topic-modal-box');
+    }
+
+    function getTopicReadDepth() {
+        const box = getTopicModalBox();
+        if (!box) return 0;
+        if (box.scrollHeight <= box.clientHeight) return 1;
+        return Math.min(1, (box.scrollTop + box.clientHeight) / box.scrollHeight);
+    }
+
+    function checkTopicReadProgress() {
+        if (!activeTopicSession) return;
+        const { topicId, tab, openedAt } = activeTopicSession;
+        if (progressState[tab].readTopics.has(topicId)) return;
+
+        const elapsedMs = Date.now() - openedAt;
+        const readDepth = getTopicReadDepth();
+        if (elapsedMs >= TOPIC_READ_MIN_MS && readDepth >= TOPIC_READ_SCROLL_THRESHOLD) {
+            progressState[tab].readTopics.add(topicId);
+            savePersistentState();
+            updateProgress(tab);
+        }
+    }
+
+    function checkExampleReadProgress() {
+        if (!activeTopicSession) return;
+        const { topicId, tab, exampleExpandedAt } = activeTopicSession;
+        if (progressState[tab].readExamples.has(topicId)) return;
+        if (!exampleExpandedAt) return;
+
+        const box = getTopicModalBox();
+        const toggle = document.querySelector('#topic-modal-body .example-toggle');
+        const content = document.querySelector('#topic-modal-body .example-content');
+        if (!box || !toggle || !content) return;
+        if (toggle.getAttribute('aria-expanded') !== 'true') return;
+
+        const elapsedMs = Date.now() - exampleExpandedAt;
+        if (elapsedMs < EXAMPLE_READ_MIN_MS) return;
+
+        const boxRect = box.getBoundingClientRect();
+        const contentRect = content.getBoundingClientRect();
+        const hasReachedEnd = contentRect.bottom <= (boxRect.bottom - 10);
+
+        if (hasReachedEnd) {
+            progressState[tab].readExamples.add(topicId);
+            savePersistentState();
+            updateProgress(tab);
+        }
+    }
+
+    function scheduleSessionCheck(sessionKey, delayMs) {
+        setTimeout(() => {
+            if (!activeTopicSession || activeTopicSession.sessionKey !== sessionKey) return;
+            checkTopicReadProgress();
+            checkExampleReadProgress();
+        }, delayMs);
+    }
+
+    function startTopicSession(topicId) {
+        const tab = getTopicTab(topicId);
+        const sessionKey = `${topicId}-${Date.now()}`;
+        activeTopicSession = {
+            topicId,
+            tab,
+            openedAt: Date.now(),
+            exampleExpandedAt: 0,
+            sessionKey
+        };
+        scheduleSessionCheck(sessionKey, TOPIC_READ_MIN_MS + 100);
+    }
+
+    function endTopicSession() {
+        checkTopicReadProgress();
+        checkExampleReadProgress();
+        activeTopicSession = null;
+    }
+
+    function handleTopicModalScroll() {
+        checkTopicReadProgress();
+        checkExampleReadProgress();
+    }
+
+    function setExampleExpandedState(toggle, content, expanded) {
+        toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        const icon = toggle.querySelector('.example-toggle-icon');
+        if (icon) icon.textContent = expanded ? '-' : '+';
+        if (expanded) content.removeAttribute('hidden');
+        else content.setAttribute('hidden', '');
+    }
+
+    function setupTopicExampleExpanders(topicId) {
+        const container = document.getElementById('topic-modal-body');
+        if (!container) return;
+        const tab = getTopicTab(topicId);
+        const alreadyTracked = progressState[tab].readExamples.has(topicId);
+
+        container.querySelectorAll('.example-box').forEach(exampleBox => {
+            const labelEl = exampleBox.querySelector('.example-label');
+            const label = labelEl ? labelEl.textContent.trim() : 'Sugar Industry Example';
+            if (labelEl) labelEl.remove();
+
+            const bodyHtml = exampleBox.innerHTML;
+            exampleBox.classList.add('example-collapsible');
+            exampleBox.innerHTML = `
+                <button type="button" class="example-toggle" aria-expanded="false">
+                    <span>${label}</span>
+                    <span class="example-toggle-icon">+</span>
+                </button>
+                <div class="example-content" hidden>${bodyHtml}</div>
+            `;
+
+            const toggle = exampleBox.querySelector('.example-toggle');
+            const content = exampleBox.querySelector('.example-content');
+            if (!toggle || !content) return;
+
+            if (alreadyTracked) {
+                setExampleExpandedState(toggle, content, true);
+            }
+
+            toggle.addEventListener('click', () => {
+                const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                const nextExpanded = !isExpanded;
+                setExampleExpandedState(toggle, content, nextExpanded);
+                if (!activeTopicSession || activeTopicSession.topicId !== topicId) return;
+                if (nextExpanded) {
+                    activeTopicSession.exampleExpandedAt = Date.now();
+                    scheduleSessionCheck(activeTopicSession.sessionKey, EXAMPLE_READ_MIN_MS + 120);
+                } else {
+                    activeTopicSession.exampleExpandedAt = 0;
+                }
+            });
+        });
+    }
+
+    function renderQuiz(section) {
+        const container = document.getElementById(`${section}-quiz-container`);
+        const questions = quizData[section];
+        container.innerHTML = '';
+
+        questions.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.id = `${section}-q${idx}`;
+            const diffClass = q.difficulty === 'beginner' ? 'beginner' : q.difficulty === 'intermediate' ? 'intermediate' : 'advanced';
+            card.innerHTML = `
+                <span class="q-difficulty card-tag ${diffClass}">${q.difficulty}</span>
+                <div class="q-number">Question ${idx + 1} of ${questions.length}</div>
+                <div class="q-text">${q.question}</div>
+                <div class="quiz-options">
+                    ${q.options.map((opt, oi) => `
+                        <div class="quiz-option" data-section="${section}" data-question="${idx}" data-option="${oi}" onclick="selectAnswer(this)">
+                            <span class="option-letter">${String.fromCharCode(65 + oi)}</span>
+                            <span>${opt}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="quiz-explanation" id="${section}-exp${idx}">
+                    <strong>Explanation:</strong> ${q.explanation}
+                </div>
+            `;
+
+            const savedAnswer = quizState[section].answered[idx];
+            if (savedAnswer !== undefined) {
+                const options = card.querySelectorAll('.quiz-option');
+                const correct = q.correct;
+                options.forEach(opt => opt.classList.add('disabled'));
+
+                if (savedAnswer === correct) {
+                    if (options[savedAnswer]) options[savedAnswer].classList.add('selected-correct');
+                    card.classList.add('answered-correct');
+                } else {
+                    if (options[savedAnswer]) options[savedAnswer].classList.add('selected-wrong');
+                    card.classList.add('answered-wrong');
+                    if (options[correct]) options[correct].classList.add('reveal-correct');
+                }
+
+                const explanation = card.querySelector('.quiz-explanation');
+                if (explanation) explanation.classList.add('visible');
+            }
+
+            container.appendChild(card);
+        });
+    }
+
+    function selectAnswer(el) {
+        const section = el.dataset.section;
+        const qIdx = parseInt(el.dataset.question);
+        const oIdx = parseInt(el.dataset.option);
+
+        if (quizState[section].answered[qIdx] !== undefined) return;
+        quizState[section].answered[qIdx] = oIdx;
+
+        const correct = quizData[section][qIdx].correct;
+        const isCorrect = oIdx === correct;
+        const card = document.getElementById(`${section}-q${qIdx}`);
+        const options = card.querySelectorAll('.quiz-option');
+
+        options.forEach(opt => opt.classList.add('disabled'));
+
+        if (isCorrect) {
+            el.classList.add('selected-correct');
+            card.classList.add('answered-correct');
+            quizState[section].correct++;
+        } else {
+            el.classList.add('selected-wrong');
+            card.classList.add('answered-wrong');
+            options[correct].classList.add('reveal-correct');
+        }
+
+        document.getElementById(`${section}-exp${qIdx}`).classList.add('visible');
+        updateScore(section);
+        savePersistentState();
+        updateProgress(section);
+
+        const totalQ = quizData[section].length;
+        const answeredCount = Object.keys(quizState[section].answered).length;
+        if (answeredCount === totalQ && quizState[section].correct >= Math.ceil(totalQ * 0.8)) {
+            setTimeout(() => launchConfetti(), 500);
+        }
+    }
+
+    function updateScore(section) {
+        const state = quizState[section];
+        const total = quizData[section].length;
+        const scoreText = document.getElementById(`${section}-score-text`);
+        const scoreRing = document.getElementById(`${section}-score-ring`);
+
+        scoreText.textContent = `${state.correct}/${total}`;
+        const circumference = 138.2;
+        const offset = circumference - (state.correct / total) * circumference;
+        scoreRing.style.strokeDashoffset = offset;
+
+        if (state.correct / total >= 0.8) scoreRing.style.stroke = 'var(--green)';
+        else if (state.correct / total >= 0.5) scoreRing.style.stroke = 'var(--orange)';
+        else scoreRing.style.stroke = 'var(--blue)';
+    }
+
+    function resetQuiz(section) {
+        quizState[section] = { answered: {}, correct: 0 };
+        // Re-shuffle options on reset
+        quizData[section] = quizDataRaw[section].map(q => shuffleOptions(q));
+        savePersistentState();
+        renderQuiz(section);
+        updateScore(section);
+        updateProgress(section);
+    }
+
+    function resetProgress() {
+        const confirmed = window.confirm('Reset all saved progress and quiz answers?');
+        if (!confirmed) return;
+
+        ['ml', 'modeling'].forEach(tab => {
+            progressState[tab].readTopics = new Set();
+            progressState[tab].readExamples = new Set();
+            progressState[tab].quizOpened = false;
+            quizState[tab] = { answered: {}, correct: 0 };
+            quizData[tab] = quizDataRaw[tab].map(q => shuffleOptions(q));
+            renderQuiz(tab);
+            updateScore(tab);
+        });
+
+        activeTopicSession = null;
+        try {
+            localStorage.removeItem(PROGRESS_STORAGE_KEY);
+        } catch (e) {}
+
+        updateProgress(activeProgressTab);
+    }
+
+    // ============================================
+    // TOPIC MODAL
+    // ============================================
+    function openTopicModal(topicId) {
+        const topic = topicContent[topicId];
+        if (!topic) return;
+        const topicTab = getTopicTab(topicId);
+        startTopicSession(topicId);
+        document.getElementById('topic-modal-title').textContent = topic.title;
+        document.getElementById('topic-modal-body').innerHTML = topic.body;
+        setupTopicExampleExpanders(topicId);
+        const topicModalBox = getTopicModalBox();
+        if (topicModalBox) topicModalBox.scrollTop = 0;
+        updateProgress(topicTab);
+        const modal = document.getElementById('modal-topic');
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // ============================================
+    // BRIDGE MODAL
+    // ============================================
+    function openBridgeModal() {
+        const modal = document.getElementById('modal-bridge');
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // ============================================
+    // QUIZ MODAL
+    // ============================================
+    function openQuizModal(section) {
+        progressState[section].quizOpened = true;
+        savePersistentState();
+        updateProgress(section);
+        renderQuiz(section);
+        updateScore(section);
+        const modal = document.getElementById(`modal-${section}`);
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeQuizModal(section) {
+        if (section === 'topic') endTopicSession();
+        document.getElementById(`modal-${section}`).classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function closeModalOnBg(event, section) {
+        if (event.target === event.currentTarget) {
+            closeQuizModal(section);
+        }
+    }
+
+    // Close modal on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const topicModal = document.getElementById('modal-topic');
+            if (topicModal && topicModal.classList.contains('open')) endTopicSession();
+            document.querySelectorAll('.modal-overlay.open').forEach(m => {
+                m.classList.remove('open');
+            });
+            document.body.style.overflow = '';
+        }
+    });
+
+    // ============================================
+    // PROGRESS
+    // ============================================
+    function hasSectionMastered(section) {
+        const totalQuestions = quizData[section].length;
+        const answeredCount = Object.keys(quizState[section].answered).length;
+        const passThreshold = Math.ceil(totalQuestions * 0.8);
+        return answeredCount === totalQuestions && quizState[section].correct >= passThreshold;
+    }
+
+    function getStepProgressForTab(tab) {
+        const totalTopics = tabTopicMap[tab].length;
+        const learnProgress = totalTopics === 0 ? 0 : progressState[tab].readTopics.size / totalTopics;
+        const connectProgress = totalTopics === 0 ? 0 : progressState[tab].readExamples.size / totalTopics;
+        const testProgress = progressState[tab].quizOpened ? 1 : 0;
+        const masterProgress = hasSectionMastered('ml') && hasSectionMastered('modeling') ? 1 : 0;
+
+        return {
+            learn: Math.min(1, learnProgress),
+            connect: Math.min(1, connectProgress),
+            test: testProgress,
+            master: masterProgress
+        };
+    }
+
+    function updateProgress(tab = activeProgressTab) {
+        activeProgressTab = tab;
+        const stepState = getStepProgressForTab(activeProgressTab);
+        const totalTopics = tabTopicMap[activeProgressTab].length;
+        const readTopicsCount = progressState[activeProgressTab].readTopics.size;
+        const readExamplesCount = progressState[activeProgressTab].readExamples.size;
+        const mlMastered = hasSectionMastered('ml');
+        const modelingMastered = hasSectionMastered('modeling');
+        const stepOrder = ['learn', 'connect', 'test', 'master'];
+        const percent = Math.round((stepOrder.reduce((sum, step) => sum + stepState[step], 0) / stepOrder.length) * 100);
+
+        document.getElementById('flowProgressFill').style.width = percent + '%';
+        document.getElementById('progressPercent').textContent = percent + '%';
+        document.getElementById('progressLabelText').textContent = `Module Progress - ${progressTabLabels[activeProgressTab]}`;
+        document.getElementById('learnMeterFill').style.width = Math.round(stepState.learn * 100) + '%';
+        document.getElementById('connectMeterFill').style.width = Math.round(stepState.connect * 100) + '%';
+        document.getElementById('learnProgressText').textContent = `${readTopicsCount}/${totalTopics} topics read`;
+        document.getElementById('connectProgressText').textContent = `${readExamplesCount}/${totalTopics} examples read`;
+        document.getElementById('testStatusText').textContent = progressState[activeProgressTab].quizOpened ? 'Quiz opened' : 'Quiz not opened';
+        document.getElementById('masterStatusText').textContent = stepState.master === 1
+            ? 'Both quizzes mastered (80%+)'
+            : `ML ${mlMastered ? 'done' : 'pending'} | Modeling ${modelingMastered ? 'done' : 'pending'}`;
+
+        stepOrder.forEach(step => {
+            const stepEl = document.querySelector(`.step[data-step="${step}"]`);
+            if (!stepEl) return;
+            const progressValue = stepState[step];
+            stepEl.classList.toggle('complete', progressValue >= 1);
+            stepEl.classList.toggle('partial', progressValue > 0 && progressValue < 1);
+        });
+    }
+
+    // ============================================
+    // TABS
+    // ============================================
+    function switchTab(tab) {
+        activeProgressTab = tab;
+        savePersistentState();
+        updateProgress(tab);
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        if (tab === 'modeling') {
+            requestAnimationFrame(() => drawRegression());
+        }
+        setTimeout(() => {
+            document.querySelectorAll(`#tab-${tab} .topic-card`).forEach((card, i) => {
+                card.style.transitionDelay = (i * 0.08) + 's';
+                card.classList.add('visible');
+            });
+            observeElements();
+        }, 50);
+    }
+
+    // ============================================
+    // SCROLL REVEAL
+    // ============================================
+    function observeElements() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    if (entry.target.classList.contains('topic-card')) entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-on-scroll, .topic-card:not(.visible)').forEach(el => observer.observe(el));
+    }
+
+    // ============================================
+    // CONFETTI
+    // ============================================
+    function launchConfetti() {
+        const container = document.createElement('div');
+        container.className = 'confetti-container';
+        document.body.appendChild(container);
+        const colors = ['#7EB8DA', '#A8D4EA', '#7BC8A4', '#A3DBBF', '#B08FCC', '#E8B87C', '#E8877C'];
+        for (let i = 0; i < 80; i++) {
+            const piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const left = Math.random() * 100;
+            const rotation = Math.random() * 720 - 360;
+            const fallDur = 2 + Math.random() * 2;
+            const fallDelay = Math.random() * 0.5;
+            const size = 6 + Math.random() * 8;
+            const shape = Math.random() > 0.5 ? '50%' : '2px';
+            piece.style.cssText = `left:${left}%;width:${size}px;height:${size}px;background:${color};border-radius:${shape};--rotation:${rotation}deg;--fall-dur:${fallDur}s;--fall-delay:${fallDelay}s;`;
+            container.appendChild(piece);
+        }
+        setTimeout(() => container.remove(), 4000);
+    }
+
+    // ============================================
+    // PARTICLES
+    // ============================================
+    function initParticles() {
+        const canvas = document.getElementById('particleCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        function resize() { canvas.width = window.innerWidth * dpr; canvas.height = window.innerHeight * dpr; ctx.scale(dpr, dpr); }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const particles = [];
+        for (let i = 0; i < 30; i++) {
+            particles.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                vx: (Math.random() - 0.5) * 0.25,
+                vy: (Math.random() - 0.5) * 0.25,
+                r: 1.5 + Math.random() * 2,
+                opacity: 0.08 + Math.random() * 0.15,
+                color: Math.random() > 0.5 ? '126, 184, 218' : '123, 200, 164'
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0) p.x = window.innerWidth;
+                if (p.x > window.innerWidth) p.x = 0;
+                if (p.y < 0) p.y = window.innerHeight;
+                if (p.y > window.innerHeight) p.y = 0;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${p.color}, ${p.opacity})`;
+                ctx.fill();
+            });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 140) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(126, 184, 218, ${0.035 * (1 - dist / 140)})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
+
+    // ============================================
+    // REGRESSION
+    // ============================================
+    let regressionPoints = [];
+
+    function initRegression() {
+        const canvas = document.getElementById('regressionCanvas');
+        if (!canvas) return;
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            regressionPoints.push({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+            drawRegression();
+        });
+        drawRegression();
+    }
+
+    function drawRegression() {
+        const canvas = document.getElementById('regressionCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const stage = canvas.closest('.viz-stage') || canvas.parentElement;
+        if (!stage) return;
+        const rect = stage.getBoundingClientRect();
+        if (rect.width < 120) return;
+        const W = Math.floor(rect.width);
+        const H = 300;
+
+        canvas.width = Math.floor(W * dpr);
+        canvas.height = Math.floor(H * dpr);
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+
+        // Grid
+        ctx.strokeStyle = '#DFEAF2';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < W; i += 40) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke(); }
+        for (let i = 0; i < H; i += 40) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(W, i); ctx.stroke(); }
+
+        ctx.strokeStyle = '#CAD9E6';
+        ctx.beginPath();
+        ctx.rect(0.5, 0.5, W - 1, H - 1);
+        ctx.stroke();
+
+        // Axis labels
+        ctx.fillStyle = '#AAB7C4';
+        ctx.font = '11px DM Sans, sans-serif';
+        ctx.fillText('Temperature (X)', W / 2 - 40, H - 6);
+        ctx.save(); ctx.translate(14, H / 2 + 20); ctx.rotate(-Math.PI / 2); ctx.fillText('Yield (Y)', 0, 0); ctx.restore();
+
+        const statsEl = document.getElementById('regressionStats');
+
+        if (regressionPoints.length === 0) {
+            ctx.fillStyle = '#AAB7C4'; ctx.font = '13px DM Sans, sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText('Click anywhere here to start placing data points', W / 2, H / 2);
+            ctx.font = '11px DM Sans, sans-serif';
+            ctx.fillText('Each click = one observation', W / 2, H / 2 + 20);
+            ctx.textAlign = 'left';
+            if (statsEl) statsEl.innerHTML = '';
+            return;
+        }
+
+        // Draw points
+        regressionPoints.forEach((p, i) => {
+            ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(126, 184, 218, 0.7)'; ctx.fill();
+            ctx.strokeStyle = 'rgba(90, 155, 197, 1)'; ctx.lineWidth = 1.5; ctx.stroke();
+            // Point number
+            ctx.fillStyle = 'rgba(44, 62, 80, 0.4)';
+            ctx.font = '9px JetBrains Mono, monospace';
+            ctx.fillText(i + 1, p.x + 7, p.y - 4);
+        });
+
+        if (regressionPoints.length === 1) {
+            ctx.fillStyle = '#AAB7C4'; ctx.font = '11px DM Sans, sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText('Add at least one more point to see the regression line', W / 2, H - 24);
+            ctx.textAlign = 'left';
+            if (statsEl) statsEl.innerHTML = '<div class="viz-stat">n = 1 -- add more points to compute regression</div>';
+            return;
+        }
+
+        // Compute regression
+        const n = regressionPoints.length;
+        let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+        regressionPoints.forEach(p => { sumX += p.x; sumY += p.y; sumXY += p.x * p.y; sumX2 += p.x * p.x; });
+        const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+
+        // Regression line
+        ctx.beginPath(); ctx.moveTo(0, intercept); ctx.lineTo(W, slope * W + intercept);
+        ctx.strokeStyle = 'rgba(123, 200, 164, 0.9)'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]); ctx.stroke(); ctx.setLineDash([]);
+
+        // Residuals
+        regressionPoints.forEach(p => {
+            const predicted = slope * p.x + intercept;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x, predicted);
+            ctx.strokeStyle = 'rgba(176, 143, 204, 0.5)'; ctx.lineWidth = 1.5; ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([]);
+        });
+
+        // Stats
+        const meanY = sumY / n;
+        let ssTot = 0, ssRes = 0;
+        regressionPoints.forEach(p => { const pred = slope * p.x + intercept; ssTot += (p.y - meanY) ** 2; ssRes += (p.y - pred) ** 2; });
+        const r2 = ssTot === 0 ? 0 : (1 - ssRes / ssTot);
+        const rmse = Math.sqrt(ssRes / n);
+
+        if (statsEl) {
+            statsEl.innerHTML = `
+                <div class="viz-stat"><strong>n</strong> = ${n}</div>
+                <div class="viz-stat"><strong>Slope</strong> = ${slope.toFixed(3)}</div>
+                <div class="viz-stat"><strong>Intercept</strong> = ${intercept.toFixed(1)}</div>
+                <div class="viz-stat"><strong>R-squared</strong> = ${r2.toFixed(3)}</div>
+                <div class="viz-stat"><strong>RMSE</strong> = ${rmse.toFixed(1)}</div>
+            `;
+        }
+    }
+
+    function resetRegression() { regressionPoints = []; drawRegression(); }
+
+    // ============================================
+    // INIT
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+        initParticles();
+        initRegression();
+        loadPersistentState();
+        updateScore('ml');
+        updateScore('modeling');
+        const topicModalBox = getTopicModalBox();
+        if (topicModalBox) topicModalBox.addEventListener('scroll', handleTopicModalScroll, { passive: true });
+        switchTab(activeProgressTab);
+        observeElements();
+        window.addEventListener('resize', drawRegression);
+    });
+    </script>
+</body>
+</html>
