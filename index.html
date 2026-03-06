@@ -1560,7 +1560,7 @@
                 <div class="formula-box">y = b0 + b1*X1 + b2*X2 + ... + bp*Xp + error<br><br>Each b_j = marginal effect of X_j on y,<br>holding all other X variables constant</div>
                 <h4>Key Considerations</h4>
                 <ul>
-                    <li><strong>Multicollinearity:</strong> When predictors are highly correlated, coefficients become unstable. Check with VIF.</li>
+                    <li><strong>Multicollinearity:</strong> When predictors are highly correlated, coefficients become unstable. Check with VIF (Variance Inflation Factor).</li>
                     <li><strong>Adjusted R-squared:</strong> Penalizes adding variables that don't help. Always prefer over raw R-squared.</li>
                     <li><strong>Feature selection:</strong> Not every variable should go in. Use domain knowledge first.</li>
                 </ul>
@@ -1740,7 +1740,7 @@
                 explanation: "The slope (0.15) gives the average change in Y per unit change in X. R-squared (0.45) means 45% of yield variation is explained by rainfall. This is association, not causation."
             },
             {
-                question: "You are building a multiple regression model and notice that the VIF for temperature is 8.5. What does this indicate?",
+                question: "You are building a multiple regression model and notice that the VIF (Variance Inflation Factor) for temperature is 8.5. What does this indicate?",
                 options: [
                     "The model has 8.5 times more variance than expected, collect more data",
                     "Temperature is highly correlated with other predictors, making its coefficient estimate unreliable. Consider removing one correlated variable or using regularization",
