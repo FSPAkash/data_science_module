@@ -1260,7 +1260,7 @@
                 <div class="topic-card" onclick="openTopicModal('slr')">
                     <div class="card-icon blue">SLR</div>
                     <h3>Simple Linear Regression</h3>
-                    <p class="card-subtitle">Predicting a value using one input variable, the workhorse of econometrics you already know.</p>
+                    <p class="card-subtitle">A first-step model for seeing how one input is related to one outcome.</p>
                     <span class="card-tag beginner">Foundational</span>
                     <div class="card-toggle">Click to learn more &#8594;</div>
                 </div>
@@ -1268,7 +1268,7 @@
                 <div class="topic-card" onclick="openTopicModal('mlr')">
                     <div class="card-icon green">MLR</div>
                     <h3>Multiple Linear Regression</h3>
-                    <p class="card-subtitle">Predicting with multiple input variables -- controlling for confounders like in multivariate econometrics.</p>
+                    <p class="card-subtitle">Extends regression to multiple inputs so decisions are based on more complete context.</p>
                     <span class="card-tag beginner">Foundational</span>
                     <div class="card-toggle">Click to learn more &#8594;</div>
                 </div>
@@ -1276,7 +1276,7 @@
                 <div class="topic-card" onclick="openTopicModal('bc')">
                     <div class="card-icon orange">BC</div>
                     <h3>Binary Classification</h3>
-                    <p class="card-subtitle">Two-class prediction -- pass/fail, buy/sell, approve/reject.</p>
+                    <p class="card-subtitle">Two-outcome prediction such as pass/fail or approve/reject.</p>
                     <span class="card-tag intermediate">Intermediate</span>
                     <div class="card-toggle">Click to learn more &#8594;</div>
                 </div>
@@ -1284,7 +1284,7 @@
                 <div class="topic-card" onclick="openTopicModal('mc')">
                     <div class="card-icon purple">MC</div>
                     <h3>Multi-class Classification</h3>
-                    <p class="card-subtitle">Predicting from more than two categories -- grading, sorting, routing.</p>
+                    <p class="card-subtitle">Choosing one label from several categories, like quality grading.</p>
                     <span class="card-tag intermediate">Intermediate</span>
                     <div class="card-toggle">Click to learn more &#8594;</div>
                 </div>
@@ -1292,7 +1292,7 @@
                 <div class="topic-card" onclick="openTopicModal('dt')">
                     <div class="card-icon blue">DT</div>
                     <h3>Decision Trees</h3>
-                    <p class="card-subtitle">A flowchart-like model that makes decisions through a series of yes/no questions.</p>
+                    <p class="card-subtitle">A rule-based model that predicts through a series of simple yes/no questions.</p>
                     <span class="card-tag intermediate">Intermediate</span>
                     <div class="card-toggle">Click to learn more &#8594;</div>
                 </div>
@@ -1300,7 +1300,7 @@
                 <div class="topic-card" onclick="openTopicModal('lr')">
                     <div class="card-icon green">LR</div>
                     <h3>Logistic Regression</h3>
-                    <p class="card-subtitle">The sigmoid function, log-odds, and probabilistic classification -- an economist's natural extension of OLS.</p>
+                    <p class="card-subtitle">A practical probability model for yes/no outcomes with clear business interpretation.</p>
                     <span class="card-tag intermediate">Intermediate</span>
                     <div class="card-toggle">Click to learn more &#8594;</div>
                 </div>
@@ -1308,7 +1308,7 @@
                 <div class="topic-card" onclick="openTopicModal('em')" style="grid-column: 1 / -1;">
                     <div class="card-icon red">EM</div>
                     <h3>Evaluation Metrics</h3>
-                    <p class="card-subtitle">How to measure whether your model is actually good -- accuracy, R-squared, error rates, and when each one lies to you.</p>
+                    <p class="card-subtitle">How to judge model quality using metrics that match business priorities.</p>
                     <span class="card-tag beginner">Foundational</span>
                     <div class="card-toggle">Click to learn more &#8594;</div>
                 </div>
@@ -1538,118 +1538,131 @@
             title: 'Simple Linear Regression',
             body: `
                 <h4>Core Idea</h4>
-                <p>Fit a straight line through data points to describe the relationship between one independent variable (X) and one dependent variable (y). You already do this in economics when you regress consumer spending on income.</p>
-                <h4>The Model</h4>
-                <div class="formula-box">y = b0 + b1 * X + error<br><br>b1 = Cov(X, y) / Var(X)<br>b0 = mean(y) - b1 * mean(X)<br><br>b1 = slope (change in y per unit change in X)<br>b0 = intercept (predicted y when X = 0)</div>
-                <h4>Assumptions (OLS)</h4>
+                <p>Simple linear regression helps you answer one practical question: "If one factor changes, how does the outcome usually change?" It fits a straight trend line through your data so you can summarize direction and rough strength.</p>
+                <h4>How To Read It</h4>
                 <ul>
-                    <li>Linear relationship between X and y</li>
-                    <li>Errors are independent and normally distributed</li>
-                    <li>Constant variance of errors (homoscedasticity)</li>
-                    <li>No extreme outliers distorting the line</li>
+                    <li><strong>Direction:</strong> Upward line means both move together. Downward line means one goes up while the other goes down.</li>
+                    <li><strong>Steepness:</strong> Steeper means bigger change in outcome for each change in input.</li>
+                    <li><strong>Spread:</strong> If points are far from the line, predictions are less reliable.</li>
+                    <li><strong>Use case:</strong> Great for a fast first model and a clear baseline.</li>
                 </ul>
-                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Plot average daily temperature (X) against sugar yield per hectare (y) across 50 growing seasons. The regression line shows that each 1 degree C increase in average temperature is associated with a 0.8 ton decrease in yield above 32 degrees C. R-squared of 0.62 tells you temperature alone explains 62% of yield variation.</p></div>
-                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Correlation is not causation.</strong> Your regression may show ice cream sales predict drowning deaths, but swimming weather causes both. Always think about confounding variables.</p></div>
+                <div class="formula-box">Think of this as: "best-fit trend line" + "prediction noise."<br>It explains a pattern, not a guaranteed rule.</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A team compares rainfall and sugar yield across seasons. The trend line goes up, so more rainfall is usually linked to higher yield. But some points still fall far from the line, reminding them that other factors also matter.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Confusing association with cause.</strong> A line can show a pattern, but it does not prove one variable is causing the other.</p></div>
             `
         },
         mlr: {
             title: 'Multiple Linear Regression',
             body: `
                 <h4>Core Idea</h4>
-                <p>Extend simple regression to include multiple predictors. Each coefficient represents the effect of that variable <em>holding all others constant</em>, exactly the ceteris paribus interpretation from economics.</p>
-                <div class="formula-box">y = b0 + b1*X1 + b2*X2 + ... + bp*Xp + error<br><br>Each b_j = marginal effect of X_j on y,<br>holding all other X variables constant</div>
-                <h4>Key Considerations</h4>
+                <p>Multiple linear regression is simple regression with more than one input. It helps when outcomes depend on several factors at the same time, like weather, soil, and fertilizer together.</p>
+                <h4>How To Think About It</h4>
                 <ul>
-                    <li><strong>Multicollinearity:</strong> When predictors are highly correlated, coefficients become unstable. Check with VIF (Variance Inflation Factor).</li>
-                    <li><strong>Adjusted R-squared:</strong> Penalizes adding variables that don't help. Always prefer over raw R-squared.</li>
-                    <li><strong>Feature selection:</strong> Not every variable should go in. Use domain knowledge first.</li>
+                    <li><strong>More realistic:</strong> Real business outcomes rarely depend on one variable only.</li>
+                    <li><strong>Fair comparison:</strong> You can estimate one factor while accounting for others.</li>
+                    <li><strong>Watch overlap:</strong> If two inputs carry almost the same information, the model struggles to separate their effects.</li>
+                    <li><strong>Start simple:</strong> Add useful variables step by step, not everything at once.</li>
                 </ul>
-                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Predict sugar yield using temperature, rainfall, soil pH, fertilizer (kg/hectare), and days since last harvest. After controlling for weather, each additional 10 kg of fertilizer increases yield by 0.3 tons - but the VIF for temperature and rainfall is 4.8, suggesting they share information.</p></div>
-                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Throwing in every variable</strong> does not make a better model. Each added variable risks overfitting. A model with 20 features on 25 data points will fit perfectly but predict terribly.</p></div>
+                <div class="formula-box">Ask: "If all other inputs stay similar, what change should I expect from this one input?"</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A yield model uses rainfall, temperature, soil quality, and fertilizer. The team sees fertilizer still helps even after accounting for weather, so they can make better operational decisions than with a one-variable model.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Too many inputs for too little data.</strong> The model may look excellent on old data but fail on new seasons.</p></div>
             `
         },
         bc: {
             title: 'Binary Classification',
             body: `
                 <h4>Core Idea</h4>
-                <p>Instead of predicting a continuous number, you predict which of two categories an observation belongs to. The output is a probability between 0 and 1.</p>
-                <div class="formula-box">Logistic Regression:<br>P(y=1|X) = 1 / (1 + e^(-(b0 + b1*X1 + ... + bp*Xp)))<br><br>The "sigmoid" function squashes any value into [0, 1]<br>If P >= 0.5, predict class 1; otherwise class 0</div>
-                <h4>Key Metrics</h4>
+                <p>Binary classification predicts one of two outcomes, such as pass/fail or good/bad. The model gives a probability score, then you convert that score into a final decision.</p>
+                <h4>How Teams Use It</h4>
                 <ul>
-                    <li><strong>Accuracy:</strong> % of correct predictions overall</li>
-                    <li><strong>Precision:</strong> Of those predicted positive, how many truly are?</li>
-                    <li><strong>Recall:</strong> Of all actual positives, how many did we catch?</li>
-                    <li><strong>Confusion Matrix:</strong> 2x2 table of TP, FP, FN, TN</li>
+                    <li><strong>Choose a threshold:</strong> For example, flag as "fail" when risk is above a chosen cutoff.</li>
+                    <li><strong>Balance trade-offs:</strong> Catching more failures may create more false alarms.</li>
+                    <li><strong>Measure what matters:</strong> Accuracy alone is often not enough.</li>
+                    <li><strong>Align to business risk:</strong> Missing a bad case can be more costly than reviewing a good one.</li>
                 </ul>
-                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A sugar mill's quality lab tests each batch: does it pass the export standard? Features: sucrose concentration, color score, ash content, moisture %. The logistic model achieves 91% accuracy, but more importantly 95% recall - catching almost all below-standard batches.</p></div>
-                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Accuracy is misleading with imbalanced classes.</strong> If 95% of batches pass, a model that always says "pass" gets 95% accuracy but is useless.</p></div>
+                <div class="formula-box">Output is a score between 0 and 1.<br>You decide what score becomes "yes" or "no."</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A quality team predicts whether each batch will fail export standards. They set a cautious threshold so risky batches are reviewed early, reducing costly shipment rejections.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Relying only on overall accuracy.</strong> If most batches are good, a lazy model can still look accurate while missing most bad batches.</p></div>
             `
         },
         mc: {
             title: 'Multi-class Classification',
             body: `
                 <h4>Core Idea</h4>
-                <p>Extend binary classification to handle 3+ categories. The model outputs a probability for each class, and the highest probability wins.</p>
-                <h4>Strategies</h4>
+                <p>Multi-class classification is for choosing one label out of three or more options, such as Premium, Standard, or Below-grade.</p>
+                <h4>How To Use It Well</h4>
                 <ul>
-                    <li><strong>One-vs-Rest (OvR):</strong> Train N separate binary classifiers. Pick the highest confidence.</li>
-                    <li><strong>Softmax (multinomial):</strong> A single model outputting probabilities for all classes, summing to 1.</li>
+                    <li><strong>Compare class scores:</strong> The model gives a confidence for each class.</li>
+                    <li><strong>Pick highest score:</strong> Highest confidence usually becomes the predicted class.</li>
+                    <li><strong>Check confusion:</strong> See which classes are commonly mixed up.</li>
+                    <li><strong>Use business logic:</strong> When classes have an order, treat that order carefully.</li>
                 </ul>
-                <div class="formula-box">Softmax: P(class_k) = e^(z_k) / sum(e^(z_j) for all j)<br><br>where z_k = b0_k + b1_k*X1 + ... + bp_k*Xp<br>Each class has its own set of coefficients</div>
-                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Grade refined sugar into Premium (A), Standard (B), and Below-grade (C). The softmax model predicts: "72% probability Premium, 24% Standard, 4% Below-grade." The mill uses these grades for pricing and routing.</p></div>
-                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Treating ordinal data as nominal.</strong> Grades A > B > C have a natural ordering. Standard multi-class models ignore this. Consider ordinal regression instead.</p></div>
+                <div class="formula-box">Simple rule: assign the class with the strongest model confidence.</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A refinery grades sugar into Premium, Standard, or Below-grade. The model helps route each batch to the right pricing lane, and managers review low-confidence predictions manually.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Ignoring class order.</strong> If labels naturally rank from high to low quality, use that context when evaluating results.</p></div>
             `
         },
         dt: {
             title: 'Decision Trees',
             body: `
                 <h4>Core Idea</h4>
-                <p>The model asks a sequence of questions about the features, splitting the data at each step. "Is temperature > 35 C? Is rainfall < 50mm?" It is the most interpretable ML model.</p>
-                <h4>How Splits Are Chosen</h4>
+                <p>A decision tree works like a checklist of yes/no questions. Each answer sends you to the next branch until you reach a final prediction.</p>
+                <h4>Why Teams Like Trees</h4>
                 <ul>
-                    <li><strong>Gini Impurity:</strong> Measures how "mixed" a node is. Pure node = Gini 0.</li>
-                    <li><strong>Entropy / Information Gain:</strong> Measures "surprise" in a node.</li>
-                    <li><strong>For regression trees:</strong> Splits minimize MSE within each leaf.</li>
+                    <li><strong>Easy to explain:</strong> Business users can follow the path and understand decisions.</li>
+                    <li><strong>Handles mixed inputs:</strong> Works with many practical feature types.</li>
+                    <li><strong>Fast to prototype:</strong> Good first model for structured data.</li>
+                    <li><strong>Useful for rules:</strong> Tree paths can become operational guidelines.</li>
                 </ul>
-                <div class="formula-box">Gini = 1 - sum(p_k^2) for all classes k<br>Entropy = -sum(p_k * log2(p_k)) for all classes k<br><br>where p_k = proportion of class k in the node</div>
-                <h4>Controlling Complexity</h4>
+                <h4>Keeping It Reliable</h4>
                 <ul>
                     <li><strong>Max depth:</strong> Limit how deep the tree can grow</li>
                     <li><strong>Min samples per leaf:</strong> Require minimum observations per endpoint</li>
                     <li><strong>Pruning:</strong> Grow full tree then cut back unhelpful branches</li>
                 </ul>
-                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A decision tree classifies whether a field will have "good" or "poor" harvest. First split: "Is irrigation available?" For irrigated fields: "Is soil pH between 6.0-7.5?" So interpretable that farm managers can follow it without technical background.</p></div>
-                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Overfitting.</strong> An unpruned tree memorizes every training example. A tree with 100 leaves for 100 points is just memorizing the answer key. Always limit depth.</p></div>
+                <div class="formula-box">Think: small set of clear rules, not a giant rulebook that memorizes past data.</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A tree predicts whether a field is likely to have a strong or weak harvest. Farm managers can inspect each rule path, such as irrigation status then soil condition, and act quickly.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Overfitting.</strong> If the tree is too deep, it learns noise from old data and performs poorly on new data.</p></div>
             `
         },
         lr: {
             title: 'Logistic Regression',
             body: `
                 <h4>Core Idea</h4>
-                <p>Despite the name, logistic regression is a <em>classification</em> algorithm. It models the log-odds of the outcome as a linear function of features. Economists who have done probit/logit models will find this very familiar.</p>
-                <h4>The Sigmoid Function</h4>
-                <div class="formula-box">sigma(z) = 1 / (1 + e^(-z))<br><br>Properties:<br>- Output always between 0 and 1<br>- When z = 0, sigma = 0.5 (decision boundary)<br>- Symmetric: sigma(-z) = 1 - sigma(z)</div>
-                <h4>Interpreting Coefficients</h4>
+                <p>Logistic regression is a practical model for yes/no outcomes. It gives a probability for the positive class and is often used when you need both prediction and interpretability.</p>
+                <h4>How To Interpret Results</h4>
                 <ul>
-                    <li>Each b_j = change in <strong>log-odds</strong> for a one-unit increase in X_j</li>
-                    <li>e^(b_j) gives the <strong>odds ratio</strong> - more intuitive</li>
-                    <li>If e^(b_j) = 1.5, a one-unit increase multiplies odds by 1.5</li>
+                    <li><strong>Probability first:</strong> Read outputs as risk scores, not hard labels.</li>
+                    <li><strong>Threshold matters:</strong> A stricter threshold catches fewer positives but raises confidence.</li>
+                    <li><strong>Feature direction:</strong> Some factors push risk up, others push risk down.</li>
+                    <li><strong>Business context:</strong> Tune decisions based on cost of false positives vs false negatives.</li>
                 </ul>
-                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Model probability a batch passes export quality. Coefficient for ash content: b = -2.3, so e^(-2.3) = 0.10. Each 1% increase in ash content multiplies the odds of passing by 0.10 - effectively dividing them by 10.</p></div>
-                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Interpreting coefficients as probabilities.</strong> A coefficient of 0.5 does NOT mean "50% more likely." It means log-odds increase by 0.5. The probability change depends on where you are on the sigmoid curve.</p></div>
+                <div class="formula-box">Output is a probability score between 0 and 1 for the target class.</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A model estimates the chance that a batch will pass export quality. The quality team focuses extra inspection on batches with high risk of failure before shipping.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Reading every model weight as a direct percent change.</strong> Use the predicted probability and business threshold for decisions.</p></div>
             `
         },
         em: {
             title: 'Evaluation Metrics',
             body: `
-                <h4>Regression Metrics</h4>
-                <div class="formula-box">R-squared = 1 - (SS_res / SS_tot)<br>&nbsp;&nbsp;Range: 0 to 1<br><br>MSE = (1/n) * sum((actual - predicted)^2)<br>MAE = (1/n) * sum(|actual - predicted|)<br>RMSE = sqrt(MSE)  -- same units as target</div>
-                <h4>Classification Metrics</h4>
-                <div class="formula-box">Accuracy  = (TP + TN) / (TP + TN + FP + FN)<br>Precision = TP / (TP + FP)<br>Recall    = TP / (TP + FN)<br>F1 Score  = 2 * (Precision * Recall) / (Precision + Recall)</div>
-                <h4>The Confusion Matrix</h4>
-                <div class="formula-box" style="text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Predicted + | Predicted - |<br>Actual + &nbsp;|&nbsp;&nbsp;&nbsp; TP &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; FN &nbsp;&nbsp;&nbsp;&nbsp;|<br>Actual - &nbsp;|&nbsp;&nbsp;&nbsp; FP &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; TN &nbsp;&nbsp;&nbsp;&nbsp;|</div>
-                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>Your yield model has RMSE 1.2 tons/hectare and R-squared 0.78. Your quality classifier has 91% accuracy but only 60% recall for defects - 40% of bad batches slip through. The F1 score of 0.72 better captures this imbalance.</p></div>
-                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Using the wrong metric for your business problem.</strong> A fraud detection model with 99.9% accuracy sounds great until you realize it just says "not fraud" to everything. Pick metrics aligned with the cost of errors.</p></div>
+                <h4>Why Metrics Matter</h4>
+                <p>A model is only useful if it is measured in the right way. The best metric depends on what mistakes are most costly in your business process.</p>
+                <h4>Regression (predicting numbers)</h4>
+                <ul>
+                    <li><strong>MAE:</strong> Average size of mistake. Easy to explain to non-technical users.</li>
+                    <li><strong>RMSE:</strong> Similar to MAE but penalizes large misses more.</li>
+                    <li><strong>R-squared:</strong> Tells how much of the overall pattern your model captures.</li>
+                </ul>
+                <h4>Classification (predicting classes)</h4>
+                <ul>
+                    <li><strong>Accuracy:</strong> Overall percent correct.</li>
+                    <li><strong>Precision:</strong> Of flagged positives, how many were truly positive?</li>
+                    <li><strong>Recall:</strong> Of real positives, how many did we catch?</li>
+                    <li><strong>F1:</strong> Balanced single score using precision and recall.</li>
+                </ul>
+                <div class="formula-box">Pick metrics based on business cost:<br>If missing a bad case is costly, prioritize recall.<br>If false alarms are costly, prioritize precision.</div>
+                <div class="example-box"><div class="example-label">Sugar Industry Example</div><p>A mill uses one model to predict yield and another to detect risky batches. For yield planning, they monitor average error. For quality control, they prioritize catching defective batches early, even if that means more manual checks.</p></div>
+                <div class="pitfall-box"><div class="pitfall-label">Common Pitfall</div><p><strong>Using one metric for every problem.</strong> A metric that is perfect for forecasting may be weak for quality screening.</p></div>
             `
         }
     };
@@ -1729,81 +1742,81 @@
         ],
         modeling: [
             {
-                question: "In a simple linear regression of sugar yield on rainfall, the slope coefficient is 0.15 and R-squared is 0.45. Which interpretation is correct?",
+                question: "A chart shows rainfall and sugar yield moving in the same direction, but with noticeable scatter. What is the safest conclusion?",
                 options: [
-                    "There is a 15% chance of increased yield and a 45% chance the model is right",
-                    "The model predicts yield will be 0.15 tons when there is no rainfall",
-                    "Each additional mm of rainfall is associated with a 0.15 ton increase in yield, and rainfall explains 45% of the variance in yield",
-                    "Rainfall causes a 0.15 ton increase in yield, and 45% of the time this prediction is correct"
+                    "Rainfall definitely causes yield to increase in every field",
+                    "Rainfall and yield are associated, but other factors still affect yield",
+                    "The model is useless unless every point is on one line",
+                    "The relationship proves fertilizer has no effect"
                 ],
-                correct: 2, difficulty: "beginner",
-                explanation: "The slope (0.15) gives the average change in Y per unit change in X. R-squared (0.45) means 45% of yield variation is explained by rainfall. This is association, not causation."
+                correct: 1, difficulty: "beginner",
+                explanation: "A trend line shows association, not guaranteed cause. Scatter means other drivers are still influencing yield."
             },
             {
-                question: "You are building a multiple regression model and notice that the VIF (Variance Inflation Factor) for temperature is 8.5. What does this indicate?",
+                question: "In a model with many inputs, temperature and humidity move together almost every day. What problem can this create?",
                 options: [
-                    "The model has 8.5 times more variance than expected, collect more data",
-                    "Temperature is highly correlated with other predictors, making its coefficient estimate unreliable. Consider removing one correlated variable or using regularization",
-                    "Temperature is the most important predictor - keep it and remove others",
-                    "The temperature coefficient is inflated by 8.5 times, so divide by 8.5"
+                    "No issue, the model always handles duplicated signals perfectly",
+                    "The model may struggle to separate their individual effects clearly",
+                    "It means temperature should be removed from all models",
+                    "It guarantees the model is overfitting"
                 ],
-                correct: 1, difficulty: "intermediate",
-                explanation: "VIF > 5-10 signals problematic multicollinearity. Options: remove one correlated variable, combine them via PCA, or use ridge regression."
+                correct: 1, difficulty: "beginner",
+                explanation: "When predictors overlap heavily, it is hard to know which one is driving the effect. This can make interpretation unstable."
             },
             {
-                question: "A quality control model classifies sugar batches as pass/fail. On 1000 batches: 900 pass, 100 fail. The model predicts 'pass' for everything (90% accuracy). What is its recall for detecting failed batches?",
+                question: "A quality model predicts 'pass' for every batch because most batches usually pass. Why is this risky?",
                 options: [
-                    "100%: because accuracy is 90%",
-                    "90%",
-                    "10%: because 100 out of 1000 batches failed",
-                    "0%: it never predicts 'fail', so it catches none of the actual failures"
+                    "It is not risky because high accuracy is enough",
+                    "It will likely miss many truly bad batches",
+                    "It means the data is corrupted",
+                    "It always gives the best business outcome"
                 ],
-                correct: 3, difficulty: "intermediate",
-                explanation: "Recall = TP / (TP + FN). The model predicts 'fail' zero times, so TP = 0 and FN = 100. Recall = 0%. This is why accuracy alone is misleading for imbalanced datasets."
+                correct: 1, difficulty: "beginner",
+                explanation: "If the model almost never flags failure, it can still look accurate while missing the cases you care most about."
             },
             {
-                question: "A decision tree for classifying loan defaults splits first on income, then on employment length. If you do not limit tree depth, what problem is most likely?",
+                question: "If a decision tree keeps splitting until it almost memorizes each training row, what usually happens next?",
                 options: [
-                    "The tree will ignore income as a feature",
-                    "The tree will be too simple and miss important patterns (underfitting)",
-                    "The tree will memorize training data specifics that do not generalize (overfitting)",
-                    "The tree will become a neural network"
+                    "It becomes more general and performs better everywhere",
+                    "It stops using important features",
+                    "It overfits and performs worse on new data",
+                    "It turns into logistic regression"
                 ],
                 correct: 2, difficulty: "intermediate",
-                explanation: "An unlimited decision tree can create a unique leaf for every training example -> 100% training accuracy but terrible test performance."
+                explanation: "Very deep trees can memorize the past instead of learning reusable patterns, so real-world performance drops."
             },
             {
-                question: "In logistic regression, a coefficient of 0.7 for 'years of education' means:",
+                question: "A logistic regression model outputs 0.78 for a batch being 'pass'. What does that output mean?",
                 options: [
-                    "Education explains 70% of the variance in the outcome",
-                    "Each additional year increases the probability of the outcome by 70%",
-                    "Each additional year increases the log-odds by 0.7, meaning odds are multiplied by e^0.7 (approximately 2.01)",
-                    "The model is 70% confident in the education variable"
+                    "The batch will pass for sure",
+                    "The model estimates about a 78% chance of pass",
+                    "78% of all batches in the factory will pass",
+                    "The model is 78% accurate overall"
                 ],
-                correct: 2, difficulty: "advanced",
-                explanation: "Logistic regression models log-odds. A coefficient of 0.7 means log-odds increase by 0.7 per unit. e^0.7 = 2.01, so the odds roughly double per year of education."
+                correct: 1, difficulty: "beginner",
+                explanation: "For logistic regression, the key output is a probability score for the target class."
             },
             {
-                question: "You are grading sugar into three categories (Premium, Standard, Below-grade). Which approach explicitly preserves the natural ordering?",
+                question: "You classify sugar as Premium, Standard, or Below-grade. What important detail should the team remember?",
                 options: [
-                    "Random Forest classifier with 3 output classes",
-                    "One-vs-Rest with logistic regression",
-                    "Ordinal regression, which models cumulative probabilities P(Y <= k) for each threshold",
-                    "K-Means clustering with 3 clusters"
+                    "These labels are randomly ordered and should be treated as unrelated",
+                    "The natural order (Premium > Standard > Below-grade) should be respected in evaluation",
+                    "Order never matters for business decisions",
+                    "Only unsupervised learning can handle three classes"
                 ],
-                correct: 2, difficulty: "advanced",
-                explanation: "Premium > Standard > Below-grade is ordinal. Ordinal regression models cumulative probabilities, producing predictions that respect the grade hierarchy."
+                correct: 1, difficulty: "intermediate",
+                explanation: "These classes have a quality ranking. Treating them as unrelated can hide important mistakes."
             },
             {
-                question: "Your yield prediction model: Training RMSE = 0.3 tons, Test RMSE = 2.8 tons, Training R-squared = 0.99, Test R-squared = 0.41. What is happening?",
+                question: "In quality control, missing a defective batch is very expensive. Which metric should get extra attention?",
                 options: [
-                    "This is normal performance and the model is ready for deployment",
-                    "The test data is corrupted and should be discarded",
-                    "The model is underfitting - it needs more features",
-                    "The model is overfitting - it memorized training data but fails to generalize"
+                    "Only overall accuracy",
+                    "Only model training speed",
+                    "Recall for the defective class",
+                    "Number of model features used"
                 ],
-                correct: 3, difficulty: "intermediate",
-                explanation: "The huge gap between training and test performance (0.3 vs 2.8 RMSE) is the textbook signature of overfitting. Remedies: simplify the model, regularize, get more data."
+                correct: 2, difficulty: "beginner",
+                explanation: "Recall tells you how many real defective batches are actually caught. When misses are costly, recall is critical."
             }
         ]
     };
